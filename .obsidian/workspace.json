@@ -1,20 +1,24 @@
 {
   "main": {
-    "id": "af2b4b5114400368",
+    "id": "d489a9b5b8478d69",
     "type": "split",
     "children": [
       {
-        "id": "59c47227b31acbc9",
+        "id": "6b20584d28393613",
         "type": "tabs",
         "children": [
           {
-            "id": "be48607e028e9763",
+            "id": "a028f24e74d45f05",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "ECE550/未命名.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "未命名"
             }
           }
         ]
@@ -23,15 +27,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "5e6cfca155290435",
+    "id": "6aba0d2f2cb084fd",
     "type": "split",
     "children": [
       {
-        "id": "6f6a9a979534ebb8",
+        "id": "fd8444ae57748a63",
         "type": "tabs",
         "children": [
           {
-            "id": "01fd80f2381984d5",
+            "id": "4af6a87742bb44c2",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -40,11 +44,11 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "Files"
+              "title": "文件列表"
             }
           },
           {
-            "id": "e1b83de2a17428fb",
+            "id": "29e758a42d54f965",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -57,17 +61,17 @@
                 "sortOrder": "alphabetical"
               },
               "icon": "lucide-search",
-              "title": "Search"
+              "title": "搜索"
             }
           },
           {
-            "id": "b5dbbc057fbfbced",
+            "id": "14c590b87b7caba7",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
               "state": {},
               "icon": "lucide-bookmark",
-              "title": "Bookmarks"
+              "title": "书签"
             }
           }
         ]
@@ -77,19 +81,20 @@
     "width": 300
   },
   "right": {
-    "id": "70852b55ca1f28bf",
+    "id": "ea220af0658a547a",
     "type": "split",
     "children": [
       {
-        "id": "477ba87805b2865f",
+        "id": "2a1629ae26d1494c",
         "type": "tabs",
         "children": [
           {
-            "id": "a3b00d2395daa2b0",
+            "id": "58e9862c23f6ec22",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
+                "file": "未命名 1.base",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,24 +104,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "未命名 1 的反向链接列表"
             }
           },
           {
-            "id": "cf13e6881aba0b80",
+            "id": "9c894c102be9972f",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "未命名 1.base",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "未命名 1 的出链列表"
             }
           },
           {
-            "id": "b29a73f51e493df7",
+            "id": "1a6d0da53c8c165e",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -127,53 +133,91 @@
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
-              "title": "Tags"
+              "title": "标签"
             }
           },
           {
-            "id": "64ac2b3b1cc4ff86",
+            "id": "30b733d9c6af1602",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "2025-08-27.md",
+                "file": "ECE550/未命名.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-08-27"
+              "title": "未命名 的大纲"
+            }
+          },
+          {
+            "id": "6f26969d20db6e83",
+            "type": "leaf",
+            "state": {
+              "type": "copilot-chat-view",
+              "state": {},
+              "icon": "message-square",
+              "title": "Copilot"
+            }
+          },
+          {
+            "id": "8fae4b92dbef4fff",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 429.5
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "graph:Open graph view": false,
-      "canvas:Create new canvas": false,
-      "daily-notes:Open today's daily note": false,
-      "templates:Insert template": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:创建新数据库": false,
+      "copilot:Open Copilot Chat": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "01fd80f2381984d5",
+  "active": "30b733d9c6af1602",
   "lastOpenFiles": [
-    "DKU/Academic Writing",
-    "Untitled",
-    "DKU/ECE550",
-    "hahah.md",
-    "DKU/ECE551",
-    "Untitled 1",
-    "DKU",
-    "Untitled.canvas",
-    "2025-08-27.md",
-    "Attachment"
+    "ECE550/未命名.base",
+    "ECE550/未命名.md",
+    "2025-10-06.md",
+    "Untitled.md",
+    "欢迎.md",
+    "未命名.base",
+    "未命名",
+    "copilot/copilot-custom-prompts/Summarize.md",
+    "copilot/copilot-custom-prompts/Make shorter.md",
+    "copilot/copilot-custom-prompts/Remove URLs.md",
+    "copilot/copilot-custom-prompts/Make longer.md",
+    "copilot/copilot-custom-prompts/Generate glossary.md",
+    "copilot/copilot-custom-prompts/Explain like I am 5.md",
+    "copilot/copilot-custom-prompts/Emojify.md",
+    "ECE550",
+    "copilot/copilot-custom-prompts/Rewrite as tweet thread.md",
+    "copilot/copilot-custom-prompts/Rewrite as tweet.md",
+    "copilot/copilot-custom-prompts/Generate table of contents.md",
+    "copilot/copilot-custom-prompts/Simplify.md",
+    "copilot/copilot-custom-prompts/Translate to Chinese.md",
+    "copilot/copilot-custom-prompts/Fix grammar and spelling.md",
+    "copilot/copilot-custom-prompts",
+    "copilot",
+    "未命名 2.base",
+    "未命名.canvas",
+    "未命名 1.base"
   ]
 }
