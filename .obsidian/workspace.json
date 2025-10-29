@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "6d6afa60613b1c51",
+        "id": "6b20584d28393613",
         "type": "tabs",
         "children": [
           {
-            "id": "b98ba56a77da5272",
+            "id": "a028f24e74d45f05",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Untitled.md",
+                "file": "Clippings/1.0 十大经典排序算法  菜鸟教程.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Untitled"
+              "title": "1.0 十大经典排序算法  菜鸟教程"
             }
           }
         ]
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ECE550/未命名.md",
+                "file": "Clippings/1.0 十大经典排序算法  菜鸟教程.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "未命名 的大纲"
+              "title": "1.0 十大经典排序算法  菜鸟教程 的大纲"
             }
           },
           {
@@ -191,21 +191,21 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b98ba56a77da5272",
+  "active": "a028f24e74d45f05",
   "lastOpenFiles": [
+    "Untitled.md",
     "Clippings/1.0 十大经典排序算法  菜鸟教程.md",
-    "leetcode/链表/链表的基本操作.md",
+    "leetcode/指针/快慢指针.md",
     "Clippings",
-    "leetcode/链表/dummy node.md",
-    "leetcode/链表/递归.md",
     "ECE550/未命名.md",
     "leetcode",
-    "leetcode/指针/快慢指针.md",
+    "leetcode/链表/链表的基本操作.md",
+    "leetcode/链表/dummy node.md",
+    "leetcode/链表/递归.md",
     "leetcode/指针",
     "leetcode/链表",
     "ECE550/未命名.base",
     "2025-10-06.md",
-    "Untitled.md",
     "欢迎.md",
     "未命名.base",
     "copilot/copilot-custom-prompts/Summarize.md",
