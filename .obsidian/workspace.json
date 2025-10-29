@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 209.5
   },
   "right": {
     "id": "ea220af0658a547a",
@@ -176,7 +176,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 429.5
+    "width": 297.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -191,7 +191,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "30b733d9c6af1602",
+  "active": "8fae4b92dbef4fff",
   "lastOpenFiles": [
     "ECE550/未命名.base",
     "ECE550/未命名.md",
