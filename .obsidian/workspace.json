@@ -162,7 +162,7 @@
             }
           },
           {
-            "id": "8fae4b92dbef4fff",
+            "id": "6e7238c11bce9f4c",
             "type": "leaf",
             "state": {
               "type": "git-view",
@@ -191,7 +191,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "4af6a87742bb44c2",
+  "active": "a028f24e74d45f05",
   "lastOpenFiles": [
     "leetcode",
     "leetcode/链表/链表的基本操作.md",
