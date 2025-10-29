@@ -191,15 +191,21 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "8fae4b92dbef4fff",
+  "active": "4af6a87742bb44c2",
   "lastOpenFiles": [
+    "leetcode",
+    "leetcode/链表/链表的基本操作.md",
+    "leetcode/链表/dummy node.md",
+    "leetcode/链表/递归.md",
+    "leetcode/指针/快慢指针.md",
+    "leetcode/指针",
+    "leetcode/链表",
     "ECE550/未命名.base",
     "ECE550/未命名.md",
     "2025-10-06.md",
     "Untitled.md",
     "欢迎.md",
     "未命名.base",
-    "未命名",
     "copilot/copilot-custom-prompts/Summarize.md",
     "copilot/copilot-custom-prompts/Make shorter.md",
     "copilot/copilot-custom-prompts/Remove URLs.md",
