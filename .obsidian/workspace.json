@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "6b20584d28393613",
+        "id": "0379ddf53c19094d",
         "type": "tabs",
         "children": [
           {
-            "id": "a028f24e74d45f05",
+            "id": "37e79c8b37f70f22",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": ".obsidian/workspace.json",
-                "bFile": ".obsidian/workspace.json",
-                "aRef": ""
+                "file": "leetcode/链表(ListNode)/链表的基本操作.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "diff",
-              "title": "Diff: workspace.json"
+              "icon": "lucide-file",
+              "title": "链表的基本操作"
             }
           }
         ]
@@ -191,17 +191,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "a028f24e74d45f05",
+  "active": "37e79c8b37f70f22",
   "lastOpenFiles": [
-    "ECE550/未命名.base",
     "leetcode/链表(ListNode)/递归.md",
-    "leetcode/链表(ListNode)/链表的基本操作.md",
     "leetcode/链表(ListNode)/dummy node.md",
-    "leetcode/链表(ListNode)",
-    "leetcode/链表/dummy node.md",
-    "leetcode/链表/链表的基本操作.md",
-    "leetcode/链表/递归.md",
+    "leetcode/链表(ListNode)/链表的基本操作.md",
     "leetcode/指针/快慢指针.md",
+    "conflict-files-obsidian-git.md",
     "2025-10-06.md",
     "欢迎.md",
     "Clippings/1.0 十大经典排序算法  菜鸟教程.md",
@@ -210,7 +206,8 @@
     "ECE550/未命名.md",
     "leetcode",
     "leetcode/指针",
-    "leetcode/链表",
+    "leetcode/链表(ListNode)",
+    "ECE550/未命名.base",
     "未命名.base",
     "copilot/copilot-custom-prompts/Summarize.md",
     "copilot/copilot-custom-prompts/Make shorter.md",
@@ -228,6 +225,7 @@
     "copilot/copilot-custom-prompts/Fix grammar and spelling.md",
     "copilot/copilot-custom-prompts",
     "copilot",
+    "未命名 2.base",
     "未命名.canvas"
   ]
 }
