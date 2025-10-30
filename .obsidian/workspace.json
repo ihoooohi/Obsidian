@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "leetcode/指针/快慢指针.md",
+                "file": "conflict-files-obsidian-git.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "快慢指针"
+              "title": "conflict-files-obsidian-git"
             }
           }
         ]
@@ -193,8 +193,9 @@
   },
   "active": "a028f24e74d45f05",
   "lastOpenFiles": [
-    "leetcode/链表/链表的基本操作.md",
+    "conflict-files-obsidian-git.md",
     "leetcode/指针/快慢指针.md",
+    "leetcode/链表/链表的基本操作.md",
     "2025-10-06.md",
     "欢迎.md",
     "leetcode/链表/dummy node.md",
