@@ -193,9 +193,12 @@
   },
   "active": "37e79c8b37f70f22",
   "lastOpenFiles": [
-    "leetcode/链表(ListNode)/递归.md",
-    "leetcode/链表(ListNode)/dummy node.md",
+    "leetcode/链表(ListNode)/node & node.next.md",
+    "leetcode/递归/原则.md",
     "leetcode/链表(ListNode)/链表的基本操作.md",
+    "leetcode/链表(ListNode)/dummy node.md",
+    "leetcode/递归",
+    "未命名",
     "leetcode/指针/快慢指针.md",
     "conflict-files-obsidian-git.md",
     "2025-10-06.md",
@@ -224,8 +227,6 @@
     "copilot/copilot-custom-prompts/Translate to Chinese.md",
     "copilot/copilot-custom-prompts/Fix grammar and spelling.md",
     "copilot/copilot-custom-prompts",
-    "copilot",
-    "未命名 2.base",
     "未命名.canvas"
   ]
 }
