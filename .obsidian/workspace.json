@@ -11,10 +11,14 @@
             "id": "a028f24e74d45f05",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "新标签页"
+              "type": "split-diff-view",
+              "state": {
+                "aFile": ".obsidian/workspace.json",
+                "bFile": ".obsidian/workspace.json",
+                "aRef": ""
+              },
+              "icon": "diff",
+              "title": "Diff: workspace.json"
             }
           }
         ]
@@ -187,10 +191,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "6e7238c11bce9f4c",
+  "active": "a028f24e74d45f05",
   "lastOpenFiles": [
-    "leetcode/链表(ListNode)/链表的基本操作.md",
+    "ECE550/未命名.base",
     "leetcode/链表(ListNode)/递归.md",
+    "leetcode/链表(ListNode)/链表的基本操作.md",
     "leetcode/链表(ListNode)/dummy node.md",
     "leetcode/链表(ListNode)",
     "leetcode/链表/dummy node.md",
@@ -206,7 +211,6 @@
     "leetcode",
     "leetcode/指针",
     "leetcode/链表",
-    "ECE550/未命名.base",
     "未命名.base",
     "copilot/copilot-custom-prompts/Summarize.md",
     "copilot/copilot-custom-prompts/Make shorter.md",
