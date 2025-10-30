@@ -11,14 +11,14 @@
             "id": "a028f24e74d45f05",
             "type": "leaf",
             "state": {
-              "type": "split-diff-view",
+              "type": "markdown",
               "state": {
-                "aFile": ".obsidian/workspace.json",
-                "bFile": ".obsidian/workspace.json",
-                "aRef": ""
+                "file": "leetcode/链表(ListNode)/链表的基本操作.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "diff",
-              "title": "Diff: workspace.json"
+              "icon": "lucide-file",
+              "title": "链表的基本操作"
             }
           }
         ]
@@ -193,15 +193,15 @@
   },
   "active": "a028f24e74d45f05",
   "lastOpenFiles": [
+    "leetcode/指针/快慢指针.md",
+    "leetcode/链表(ListNode)/链表的基本操作.md",
     "ECE550/未命名.base",
     "leetcode/链表(ListNode)/递归.md",
-    "leetcode/链表(ListNode)/链表的基本操作.md",
     "leetcode/链表(ListNode)/dummy node.md",
     "leetcode/链表(ListNode)",
     "leetcode/链表/dummy node.md",
     "leetcode/链表/链表的基本操作.md",
     "leetcode/链表/递归.md",
-    "leetcode/指针/快慢指针.md",
     "2025-10-06.md",
     "欢迎.md",
     "Clippings/1.0 十大经典排序算法  菜鸟教程.md",
