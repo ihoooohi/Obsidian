@@ -90,9 +90,8 @@ r.POST("/login", func(c *gin.Context) {
 
 告诉客户端结果是什么。
 
-Go
 
-```
+```go
 // 1. 返回 JSON（最常用，gin.H 是 map[string]any 的简写）
 c.JSON(200, gin.H{"message": "success"})
 
@@ -112,9 +111,8 @@ c.Redirect(http.StatusMovedPermanently, "https://google.com")
 
 中间件是在处理业务逻辑**之前**或**之后**执行的代码，比如日志记录、身份验证。
 
-Go
 
-```
+```go
 // 定义一个中间件
 func MyMiddleware() gin.HandlerFunc {
     return func(c *gin.Context) {
@@ -136,9 +134,8 @@ func main() {
 
 结合你之前的 **依赖注入** 代码，一个典型的 Gin Handler 使用方式是这样的：
 
-Go
 
-```
+```go
 // Handler 结构体
 type UserHandler struct {
     service *Service // 依赖注入过来的 Service
