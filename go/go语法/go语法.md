@@ -147,6 +147,7 @@ func DoSomething() (err error) {
 在一些逻辑非常复杂的长函数中，你可能在很多地方都要返回。如果使用具名返回值，你可以先给它们赋好默认值，然后在不同的 `if/else` 分支里直接写 `return`。
 
 ```go
+
 func FindUser(id string) (user *User, err error) {
     // 默认值已经初始化为 nil, nil 了
     if id == "" {
@@ -175,3 +176,8 @@ func FindUser(id string) (user *User, err error) {
 |返回多个同类型变量（做文档说明）|函数逻辑很短、很直观（如你的 `Get`）|
 |需要在 `defer` 中修改或记录返回值|存在变量遮蔽（Shadowing）风险时|
 |需要在 `defer` 中捕获 `panic`|会导致“裸返回” (`return`) 含义不明时|
+## 五、大小写规则
+
+**是否能被包外访问，只取决于：名字首字母是否大写**
+**🔹 大写 → 导出（public）**
+**🔹 小写 → 未导出（private，包内可见）**
