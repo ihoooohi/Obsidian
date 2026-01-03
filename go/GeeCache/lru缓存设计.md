@@ -157,3 +157,19 @@ func (c *Cache) Get(key string) (val CacheValue, ok bool) {
 }
 ```
 
+
+## 五、⭐️存储的缓存值的类型设计
+
+首先我先从上到下列出所有有关存储值的类型：
+1. `maxbytes` 和 `nbytes` ：int64
+2. struct `entry` 中的 `val`：CacheValue
+3. interface `CacheValue` ：Len() int
+4. `byteview` : []byte (type byte = uint8)
+
+为什么 `maxbytes` 和 `nbytes` 是int64不是int？是因为int在32位系统中是int32（约2GB）不一定够用，int64就足够大了
+
+为什么 struct `entry` 中的 `val` 的值是个接口不是具体的int或者byte而是CacheValue接口？因为这样可以保持可拓展性，不然像图片或者json格式的数据没法直接传
+
+为什么CacheValue的Len()方法返回的是int不是跟nbytes一样的int64？因为标准里的len()返回的是int类型，所以要用int
+
+最后注意存入值后更新nbytes是要用显式类型转换把int转成int64，如  `c.nbytes -= int64(len(kv.key)) + int64(kv.val.Len())`
