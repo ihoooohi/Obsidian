@@ -244,12 +244,39 @@ func main() {
 **接口类型的变量，最常见、最重要的用途，就是作为函数参数**
 
 ```go
-type human interface {
+type Human interface {
 	Walk()
 	Speak()
 }
 
+func WalkSpeak(h human) {
+	h.Walk()
+	h.Speak()
+}
 
+type American struct {}
+func (w American) Walk() {
+	fmt.Println("da")
+}
+func (w American) Speak() {
+	fmt.Println("English")
+}
+
+type Chinese struct {}
+func (w Chinese) Walk() {
+	fmt.Println("dada")
+}
+func (w Chinese) Speak() {
+	fmt.Println("Chinese")
+}
+
+func main() {
+	var a American
+	var c Chinese
+	
+	WalkSpeak(a)
+	WalkSpeak(c)
+}
 ```
 ## 八、⭐接口型函数
 
