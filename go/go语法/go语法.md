@@ -182,7 +182,15 @@ func FindUser(id string) (user *User, err error) {
 
 **🔹 大写 → 导出（public）**
 🔹 **小写 → 未导出（private，包内可见）**
-## 六、为什么有函数类型？
+
+## 六、函数类型 & 接口类型 & 接口型函数
+
+总的来说
+
+**函数类型** ---> 抽象单个行为
+**接口类型** ---> 抽象多个行为
+**接口型函数** ---> 用函数快速进入接口世界（不用struct）
+### 1、为什么有函数类型？
 
 为什么要设计函数类型的变量？----**把“行为”抽象成数据，从而避免重复流程代码**
 
@@ -232,7 +240,7 @@ func main() {
 	})
 }
 ```
-## 七、为什么有接口类型？
+### 2、为什么有接口类型？
 
 知道为什么有函数类型后，我们会发现如果只有函数类型还是不够，函数类型变量只能抽象**单个行为**，不能抽象**一组行为**，于是接口诞生了
 
@@ -249,7 +257,7 @@ type Human interface {
 	Speak()
 }
 
-func WalkSpeak(h human) {
+func WalkSpeak(h Human) {
 	h.Walk()
 	h.Speak()
 }
@@ -278,7 +286,39 @@ func main() {
 	WalkSpeak(c)
 }
 ```
-## 八、⭐接口型函数
+### 3、为什么要有接口型函数？
+
+因为参照上面的代码，我想实现 `WalkSpeak()` 一定要先弄个struct，这有点麻烦，我只是临时一次性的话能不能不要每次都搞个struct呢？于是接口型函数诞生了
+
+接口型函数特点就是可以**不用struct**，适合**临时**
+
+比如说将上面的代码改成接口型函数
+
+```go
+type Human interface {
+	Walk()
+	
+}
+
+func Walk(h Human) {
+	h.Walk()
+}
+
+type HumanFunc func()
+
+func (h HumanFunc) Walk() {
+	h()
+}
+
+//使用
+func main() {
+	Walk(HumanFunc(func(){
+		fmt.Println("da")
+	}))
+}
+```
+
+### 4、⭐接口型函数
 
 什么是接口型函数？就是用函数**类型**实现接口
 
@@ -294,29 +334,30 @@ type Greeter interface {
 	Greet() string
 }
 ```
-2. 写函数类型
+2. 写函数类型（**等价于要实现接口方法的struct**）
 ```go
 type GreeterFunc func() string
 ```
-3. 函数类型实现接口方法
+3. 函数类型实现接口方法，**在方法内部调用自身（函数值
+4. ）**
 ```go
 func (g GreeterFunc) Greet() string {
 	return g()
 }
 ```
 
-使用接口型函数
+使用接口型函数（本质就是替换接口参数）
 1. 先定义一个接口变量
 ```go
 var g Greeter
 ```
 2. 再将一个匿名函数转成接口函数类型，再赋值
 ```go
-g = Greeter(func() string {
+g = GreeterFunc(func() string {
 	return "hello"
 })
 ```
-3. 调用Get()
+3. 调用Greet()
 ```go
-g.Get()
+g.Greet()
 ```
