@@ -361,3 +361,59 @@ g = GreeterFunc(func() string {
 ```go
 g.Greet()
 ```
+
+
+## 七、锁
+
+### 1.概念
+
+go的**进程内锁**在`sync`包中，包括**互斥锁**（`Mutex`）和**读写锁**（`RWMutex`）
+
+**互斥锁**（`Mutex`）:
+
+一次只能一个goroutine，锁期间不能读不能写
+
+**读写锁**（`RWMutex`）
+
+RWMutex有两把锁，**写锁**（`Lock()`）和 **读锁**（`RLock()`）
+
+写锁锁后，只能一个goroutine写
+```go
+var mu sync.RWMutex
+
+mu.Lock()
+data = 32
+mu.UnLock()
+```
+读锁锁后，多个goroutine能读
+
+```go
+var mu sync.RWMutex
+
+mu.RLock()
+v := data
+mu.RUnlock()
+```
+
+读锁是共享的，写锁必需独占
+
+go中写优先，必须写锁释放读锁才能释放；同时必须读锁释放写锁才能拿到
+```
+G1: RLock()  ─────── RUnlock()
+G2: RLock()     ─────── RUnlock()
+G3: Lock()           ─────── Unlock()
+G4: RLock()                （阻塞）
+
+```
+G1，G2读，读锁释放后，G3写锁，G4读锁被阻塞不能读，G3写锁释放后，G4拿到读锁
+
+### 2.使用场景
+
+| 使用场景       | 建议      |
+| ---------- | ------- |
+| 通常场景       | Mutex   |
+| 写多         | Mutex   |
+| 临界区极小      | Mutex   |
+| 读比写多，且读很耗时 | RWMutex |
+
+
