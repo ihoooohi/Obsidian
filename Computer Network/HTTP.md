@@ -37,7 +37,7 @@ Header = **控制和描述请求的元信息**
     
 - POST / PUT / PATCH：常有
 
-## 一次http响应有什么
+## 三、一次http响应有什么
 
 ### 1.Status Code（状态码）
 
