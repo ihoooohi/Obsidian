@@ -1,5 +1,3 @@
 ## go和c++的不同
 
-对与只读的结构体 byteview
-
-go： `func (v byteview) Len() int` 而不是 `(v *byteview)`
+方法的接收者分为**值接收者** 和**指针接收者**
