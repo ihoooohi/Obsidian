@@ -513,3 +513,8 @@ c.wg.Add(1)
 c.value = fn()
 c.wg.DOne()
 ```
+
+## slice的底层实现
+## map的底层实现
+
+## go的垃圾回收（GC）
