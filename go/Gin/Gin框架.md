@@ -12,7 +12,7 @@ r.GET("/user", handleGet)      // 查询
 r.POST("/user", handlePost)    // 新增
 r.PUT("/user", handlePut)      // 全量更新
 r.PATCH("/user", handlePatch)  // 部分更新
-r.DELETE("/user", handleDelete)// 删除
+ir.DELETE("/user", handleDelete)// 删除
 
 // 路由组：把相同前缀的路径分在一起，方便管理
 v1 := r.Group("/api/v1")
