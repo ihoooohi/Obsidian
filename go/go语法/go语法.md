@@ -622,6 +622,81 @@ type hmap struct {
 
 #### map的扩容机制
 
+map 有两种情况需要扩容:
+1. kv的数量 / bucket 的数量 太多了（> 6.5）
+2. 一个 bucket 中 overflow 太多了（哈希冲突太多了）
+
+##### 针对情况 1，解决办法：
+
+---- **翻倍增加 bucket 数量**
+
+**问题 1：** 但是这样有一个问题，如果 map 已经很大了，一次性迁移数据太慢了，很浪费时间
+
+于是go 的解决办法是 ---- **渐进式 rehash**
+
+即不是一次性搬完，而是同时保留 **旧 bucket** 的指针和 **新 bucket 的指针**
+
+```go
+type hmap struct {
+...
+buckets unsafe.Pointer
+oldbuckets unsafe.Pointer
+...
+}
+```
+
+每次读前或写前，先搬迁 1,2 个 bucket
+
+**问题 2：** key 的 hash 值对应的桶编号是怎么计算的？
+
+用 `B` 来计算，`B` = log2（桶数）
+
+```go
+type hmap struct {
+...
+B unint8
+buckets unsafe.Pointer
+oldbuckets unsafe.Pointer
+...
+}
+```
+
+**扩容前：**
+```text
+桶数：2^B
+B: B
+桶号：hash 的低 B 位
+```
+
+**扩容后：**
+```text
+桶数：2^(B+1)
+B: B+1
+桶号：hash 的低 B+1 位
+```
+
+hash 值是不变的，假设 key0 的哈希值是 001110， key1 的哈希值是 001011，扩容前B 是 2，扩容后 B 是 3
+
+则 key0 桶号：10(2) ---> 110(2+4=6)
+则 key1 桶号：11(3) ---> 011(3)
+
+新多出来的这一位，0 --> 还在原桶，1 --> 去新的桶的同样相对位置
+
+所以扩容后 key：
+- 要么还在原桶        
+- 要么去 原桶 + 原桶数
+
+![[a5f5de62fcaa6ea6cdc108d2bf1d456d.jpg]]
+##### 针对情况2，解决办法：
+
+---- **等量扩容（same-size-grow）**
+
+也就是不改变 bucket 的大小，新开辟一块**同样大小**的内存，把数据依然是 **渐进式** 地迁移过去（buckets 指向新内存， oldbuckets 指向原内存），然后让 kv 的分布更均匀
+
+这就有一个问题，新的 buckets 怎么就保证分布更均匀了而不是和旧的一样
+
+答案是渐进式搬迁中，用**新的哈希扰动/种子（hash seed）** 重新计算 key 的哈希结果
+
 
 ### go的垃圾回收（GC）
 
