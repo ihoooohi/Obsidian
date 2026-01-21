@@ -2,10 +2,13 @@
 
 - IP
 	- 网络层
-	- IPv4（32bit），十进制表示
+	- IPv4（32bit），decimal 
 		- eg. 10.0.0.1
-	- IPv6（128bit），十六进制表示
+	- IPv6（128bit），hex
 		- eg. f018:9008::7a4e
+- MAC地址
+	- 数据链路层 
+	- 48bit，hex
 
 其实就是网络接口
 
