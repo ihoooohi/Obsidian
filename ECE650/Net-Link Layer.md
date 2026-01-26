@@ -33,3 +33,6 @@ if five 1's `11111` is in packet, it will insert 0 on the tail.
 	- have ack, no connection
 -  **Acknowledged Connection-Oriented Service**
 	- have ack, have connection (similar as TCP)
+## flow control
+
+Frames sent only when receiver gives permission
