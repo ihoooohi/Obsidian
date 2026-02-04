@@ -32,6 +32,10 @@ Two routing algorithms
 - Link State (Dijkstra-Prim Shortest Path Algorithm)
 #### Distance Vector
 
+![[Pasted image 20260204101848.png]]
+
+![[Pasted image 20260204101909.png]]
+
 problem -- **count-to-infinity**
 
 - **1. 路由器只信邻居**
