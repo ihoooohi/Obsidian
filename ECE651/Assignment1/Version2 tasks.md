@@ -1,12 +1,12 @@
-|Goal|任务|描述|
-|---|---|---|
-|**Goal 1**|Task 1-4|新船只形状 (Battleship 和 Carrier)|
-|**Goal 2**|Task 5-8|V2ShipFactory 和新放置方向|
-|**Goal 3**|Task 9-12|新动作系统 (Move Ship)|
-|**Goal 4**|Task 13-15|新动作系统 (Sonar Scan)|
-|**Goal 5**|Task 16-18|动作选择菜单|
-|**Goal 6**|Task 19-22|电脑玩家|
-|**Goal 7**|Task 23-24|游戏模式选择和集成|
+| Goal       | 任务         | 描述                           |
+| ---------- | ---------- | ---------------------------- |
+| **Goal 1** | Task 1-4   | 新船只形状 (Battleship 和 Carrier) |
+| **Goal 2** | Task 5-8   | V2ShipFactory 和新放置方向         |
+| **Goal 3** | Task 9-12  | 新动作系统 (Move Ship)            |
+| **Goal 4** | Task 13-15 | 新动作系统 (Sonar Scan)           |
+| **Goal 5** | Task 16-18 | 动作选择菜单                       |
+| **Goal 6** | Task 19-22 | 电脑玩家                         |
+| **Goal 7** | Task 23-24 | 游戏模式选择和集成                    |
 
 | 文件           | 描述                          |
 | ------------ | --------------------------- |
