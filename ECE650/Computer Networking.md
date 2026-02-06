@@ -79,10 +79,10 @@ PC3 (MAC:C)
     - 它还负责 **DHCP**（自动分配 IP 地址）和**防火墙**安全过滤。
         
 - **你的视角：** 当你做 AI 代理或分布式后端时，跨地域的节点通信（比如北京和上海的服务器）必须经过层层路由器的寻址转发1
-![[Pasted image 20260119110029.png]]
+![[images/Pasted image 20260119110029.png]]
 ### 3.OSI网络模型
 
-![[Pasted image 20260121103144.png]]
+![[images/Pasted image 20260121103144.png]]
 ### 4.相关linux命令
 
 - `ping`: 网络层，测试主机是否可达
@@ -92,4 +92,4 @@ PC3 (MAC:C)
 - `traceroute`: 网络层，看 ip 的跳转
 
 - `nc`：传输层，建立 tcp 连接
-	- ![[Pasted image 20260121104002.png]]
+	- ![[images/Pasted image 20260121104002.png]]

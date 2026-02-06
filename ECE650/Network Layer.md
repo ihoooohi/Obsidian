@@ -16,9 +16,9 @@ Packets routed individually & No advance set up (not be like wire)
 **IP 的无连接特性**
 
 content of routing table: **destination --> next hop**
-![[Pasted image 20260202104506.png|500]]
+![[images/Pasted image 20260202104506.png|500]]
 router will update its routing table based on **routing algorithm** (e.g. A's table), when some "cost" in the network changed.
-![[Pasted image 20260202105251.png]]
+![[images/Pasted image 20260202105251.png]]
 ### Routing vs Forwarding
 
 Forwarding: **Check routing table** to find appropriate outgoing interface for packet
@@ -32,9 +32,9 @@ Two routing algorithms
 - Link State (Dijkstra-Prim Shortest Path Algorithm)
 #### Distance Vector
 
-![[Pasted image 20260204101848.png]]
+![[images/Pasted image 20260204101848.png]]
 
-![[Pasted image 20260204101909.png]]
+![[images/Pasted image 20260204101909.png]]
 
 problem -- **count-to-infinity**
 

@@ -4,7 +4,7 @@
 
 ## 进程（process）的内存地址空间
 
-![[Pasted image 20260105125219.png]]
+![[images/Pasted image 20260105125219.png]]
 stack存放局部变量，heap是动态申请的内存，static data是全局变量和静态变量，code是机器指令（二进制/十六进制）
 
 ⭐进程不是直接访问物理内存，而通过虚拟内存，每个进程有一个虚拟地址空间，通过页表映射成物理地址
@@ -13,7 +13,7 @@ stack存放局部变量，heap是动态申请的内存，static data是全局变
 
 ## 线程（thread）的内存地址空间
 
-![[Pasted image 20260105130351.png]]
+![[images/Pasted image 20260105130351.png]]
 线程代表一个执行的上下文：
 - Program Counter （PC）
 - Stack Pointer （SP）

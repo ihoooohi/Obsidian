@@ -1,5 +1,5 @@
 ## Shared Memory
-![[Pasted image 20260114104257.png|300]]
+![[images/Pasted image 20260114104257.png|300]]
 mmap
 ```
 Process A        Process B
@@ -27,7 +27,7 @@ shared physical memory (IPC)
 
 ## Message Passing
 
-![[Pasted image 20260114104342.png|300]]
+![[images/Pasted image 20260114104342.png|300]]
 
 ```
 Shared Memory

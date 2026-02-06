@@ -12,9 +12,9 @@
 x = x + 1
 ```
 
-![[Pasted image 20260107142231.png]]
+![[images/Pasted image 20260107142231.png]]
 
-![[Pasted image 20260107142306.png]]
+![[images/Pasted image 20260107142306.png]]
 ### 2. Race Condition
 
 程序结果依赖于执行顺序
@@ -178,7 +178,7 @@ Phase 2
 
 ## 十一、锁的并发冲突
 
-![[Pasted image 20260107155248.png]]
+![[images/Pasted image 20260107155248.png]]
 
 `while (condition) {}`
 
@@ -222,7 +222,7 @@ Phase 2
 
 > **不是抢，是协议式让步。**
 
-![[Pasted image 20260107155125.png]]
+![[images/Pasted image 20260107155125.png]]
 
 ---
 

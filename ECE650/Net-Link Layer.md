@@ -13,7 +13,7 @@ Layer2 handle **bit-related errors**, not **packet drop(Layer4)**
 Layer3 gives Layer2 a sequence of bits, Layer2 divides bit stream **frame by frame** and add **Header** + **Tailer**, then send frame over Layer1
 
 
-![[Pasted image 20260126104457.png]]
+![[images/Pasted image 20260126104457.png]]
 
 `Frame = [Header | Packet | Trailer]`
 
@@ -23,7 +23,7 @@ the answer is Bit Stuffing with Start & End flags，the flag is **6 consecutive 
 
 if five 1's `11111` is in packet, it will insert 0 on the tail.
 
-![[Pasted image 20260126111536.png]]
+![[images/Pasted image 20260126111536.png]]
 
 ## Layer 2 Services – Service to Network Layer
 
@@ -85,4 +85,4 @@ because if unreliable channel use error detection, it will often resend, which c
 
 throughput(吞吐量)
 
-![[Pasted image 20260128111600.png]]
+![[images/Pasted image 20260128111600.png]]

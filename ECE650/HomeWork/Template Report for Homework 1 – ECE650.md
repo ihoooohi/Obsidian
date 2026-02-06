@@ -34,7 +34,7 @@ The primary objective of this assignment is to implement a **custom memory alloc
 
 ### 1. Data Structure Design
 
-![[e3298a32ea04ba6a2ce934bd99f48992.jpg]]
+![[images/e3298a32ea04ba6a2ce934bd99f48992.jpg]]
 
 To manage heap memory efficiently, a **block header structure** (`block_t`) is placed at the beginning of each memory block to store metadata.
 
@@ -77,7 +77,7 @@ Each block header contains the following fields:
 	    block_t *prev_phys;
 	};
     ```
-![[b9763f88dc951bdb2ca2261ca08adfe9.jpg]]
+![[images/b9763f88dc951bdb2ca2261ca08adfe9.jpg]]
 
 - **Block Splitting**  
     When a free block is significantly larger than the requested size, it is split into:
@@ -120,10 +120,10 @@ The following tests were executed:
 ### 1. Experimental Results
 
 **First Fit (FF)**  
-![[Pasted image 20260121024416.png]]
+![[images/Pasted image 20260121024416.png]]
 
 **Best Fit (BF)**  
-_![[Pasted image 20260121024510.png]]
+_![[images/Pasted image 20260121024510.png]]
 
 ---
 
