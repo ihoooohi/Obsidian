@@ -1,0 +1,276 @@
+
+---
+## 基本操作
+
+虚拟头节点模版
+```python
+dummy = ListNode(-1)
+cur = dummy
+...
+return dummy.next
+```
+
+遍历链表到None
+```python
+	while cur:
+```
+## **🔁 一、数组转链表**
+
+==使用dummy node方便操作链表头部
+```python
+dummy = ListNode(-1)
+cur = dummy
+```
+```python
+def createLinkedList(arr):
+    if arr is None or len(arr) == 0:
+        return None
+
+    dummy = ListNode(-1)
+    cur = dummy
+    
+    for x in arr:
+	    cur.next = ListNode(arr)
+	    cur = cur.next
+
+    return dummy.next
+
+```
+## **🔁 二、反转链表**
+
+
+### **✅ 迭代版**
+
+```python
+def reverse_list(head):
+    prev = None
+    cur = head
+    while cur:
+        nxt = cur.next
+        cur.next = prev
+        prev = cur
+        cur = nxt
+    return prev
+```
+
+### **✅ 递归版**
+
+```python
+def reverse_list_recursively(head):
+    if not head or not head.next:
+        return head
+    new_head = self.reverse_list_recursively(head.next)
+    head.next.next = head
+    head.next = None
+    return new_head
+```
+
+---
+
+## **➕ 三、插入节点（在指定位置）**
+
+```python
+def insert_node(head, index, val):
+    dummy = ListNode(0, head)
+    cur = dummy
+    for _ in range(index):
+        if not cur.next:
+            break
+        cur = cur.next
+    new_node = ListNode(val, cur.next)
+    cur.next = new_node
+    return dummy.next
+```
+
+---
+
+## **➖ 四、删除节点（按值删除）**
+
+```python
+def delete_node(head, val):
+    dummy = ListNode(0, head)
+    cur = dummy
+    while cur.next:
+        if cur.next.val == val:
+            cur.next = cur.next.next
+            break
+        cur = cur.next
+    return dummy.next
+```
+
+---
+
+## **🔄 五、合并两个有序链表**
+
+```python
+def merge_two_sorted_lists(l1, l2):
+    dummy = ListNode(0)
+    cur = dummy
+    while l1 and l2:
+        if l1.val < l2.val:
+            cur.next = l1
+            l1 = l1.next
+        else:
+            cur.next = l2
+            l2 = l2.next
+        cur = cur.next
+    cur.next = l1 if l1 else l2
+    return dummy.next
+```
+
+---
+
+## **五、分隔链表**
+
+==断开节点和原链表之间的链接==
+```python
+temp = head.next
+head.next = None
+head = temp
+```
+```python
+class Solution:
+
+    def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        dummy1= ListNode(-1)
+        cur1 = dummy1
+        dummy2 = ListNode(-1)
+        cur2 = dummy2
+        while head:
+            if head.val < x:
+                cur1.next = head
+                cur1 = cur1.next
+                temp = head.next
+                head.next = None
+                head = temp
+            else:
+                cur2.next = head
+                cur2 = cur2.next
+                temp = head.next
+                head.next = None
+                head = temp
+        cur1.next = dummy2.next
+        return dummy1.next
+```
+
+## **🧩 六、找中点（快慢指针）**
+
+```python
+def find_middle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    return slow
+```
+
+---
+
+## **🔁 七、检测环 & 环的入口（快慢指针）**
+
+```python
+def detect_cycle(head):
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            slow = head
+            while slow != fast:
+                slow = slow.next
+                fast = fast.next
+            return slow
+    return None
+```
+
+---
+
+## **📏 八、删除倒数第 N 个节点（双指针）**
+
+==使用虚拟头节点防止处理删掉第一个节点的情况==
+```python
+def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        dummy.next = head
+        left = dummy
+        right = dummy
+        for i in range(n):
+            right = right.next
+        while right.next:
+            right = right.next
+            left = left.next
+        left.next = left.next.next
+        return dummy.next
+```
+
+---
+
+## **🪞 九、判断回文链表**
+
+```python
+def is_palindrome(head):
+    # 1. 找中点
+    slow, fast = head, head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    # 2. 反转后半部分
+    prev = None
+    while slow:
+        nxt = slow.next
+        slow.next = prev
+        prev = slow
+        slow = nxt
+
+    # 3. 比较两半
+    left, right = head, prev
+    while right:
+        if left.val != right.val:
+            return False
+        left, right = left.next, right.next
+    return True
+```
+
+---
+
+## **🧠 十、链表排序（归并排序）**
+
+```python
+def sort_list(head):
+    if not head or not head.next:
+        return head
+    
+    # 找中点
+    slow, fast = head, head.next
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    
+    mid = slow.next
+    slow.next = None
+    
+    left = sort_list(head)
+    right = sort_list(mid)
+    return merge_two_sorted_lists(left, right)
+```
+
+---
+
+## **🧠 相交链表**
+
+==A，B链表走完A+B路程后必定相等，相等后返回其中一个即可，若是none则不相交，反之返回相交点==
+```python
+	p1 = headA
+	p2 = headB
+	while p1 != p2:
+		if p1 == None:
+			p1 = headB
+		else:
+			p1 = p1.next
+		if p2 == None:
+			p2 = headA
+		else:
+			p2 = p2.next
+	return p1
+```
