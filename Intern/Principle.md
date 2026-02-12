@@ -54,3 +54,5 @@ geecache
 
 主线任务 ai 应用
 支线任务 myclaw
+
+找工作岗位不要乱投，找好具体的公司的具体部分，字节trae，或者agent公司，minimax，智谱
