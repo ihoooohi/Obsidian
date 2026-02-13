@@ -56,33 +56,60 @@ Data Flow (Gateway Mode):
                                        Bus.Outbound ──► Channel ──► Telegram/Feishu/WeCom/WhatsApp/WebUI
 ```
 
+
+## 项目功能
+
+通过telegram可以指挥agent在服务器工作，支持长期记忆，支持skill，不用webui
+- cli agent
+- feishu channel
+- long term memory
+- skill （后期功能）
+- cron(后期功能)
+
+写做最小的mvp，用飞书能查询服务器状态，
+## 项目模块
+
+### CLI
+cobra
+
+### Gateway
+
+### Agent
+
+```text
+用户消息 + Memory Context + Skills
+           │
+           ▼
+    ┌─────────────────┐
+    │  System Prompt  │  ← AGENTS.md + SOUL.md + Memory
+    └────────┬────────┘
+             │
+             ▼
+┌────────────────────────────────────────┐
+│        agentsdk-go Runtime             │
+│  ┌──────────────────────────────────┐  │
+│  │     ReAct Loop (迭代推理)        │  │
+│  │  1. Prompt → LLM                 │  │
+│  │  2. LLM decide: 回答/工具        │  │
+│  │  3. 执行工具                     │  │
+│  │  4. 结果返回 LLM                 │  │
+│  │  5. 重复直到完成 (最多20次)      │  │
+│  └──────────────────────────────────┘  │
+└────────┬───────────────────────────────┘
+         │
+         ▼
+      最终回复
+
+```
+#### ReAct Loop
+
+
 ## 开发路线
 
 
-  我们不要试图一口气吃成胖子，我们将项目分解为 5 个阶段：
 
 
-   * 阶段一：骨架搭建 (Skeleton)
-       * 目标：建立项目目录，跑通一个只会打印 "Hello World" 的命令行工具。
-       * 学习：Go 模块管理 (go mod)，Cobra 基础。
 
-
-   * 阶段二：配置系统 (Configuration)
-       * 目标：程序能读取 config.json 文件，知道你的 API Key 是什么。
-       * 学习：结构体定义，JSON 处理。
-
-   * 阶段三：连接大脑 (Agent Core)
-       * 目标：能通过命令行发送一句话给 AI，并收到回复。
-       * 学习：HTTP 请求，或者使用 AI SDK。
-
-   * 阶段四：持续对话 (REPL)
-       * 目标：像聊天一样，你一句我一句，直到你输入 exit。
-       * 学习：标准输入输出流处理。
-
-
-   * 阶段五：构建网关 (Gateway - 进阶)
-       * 目标：搭建一个简单的 Web 服务，通过网页或 API 接收消息。
-       * 学习：HTTP Server，并发处理。
 
   ---
 
