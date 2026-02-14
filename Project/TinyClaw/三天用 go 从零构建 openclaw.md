@@ -26,6 +26,286 @@ Agent还有 model 字段是为了能够在运行时切换
 
 第三步，给 ai 接上手脚，编写各式各样的 tool，使用 ReAct 模式
 
+### ReAct
+ 
+什么是 ReAct？
+ 
+ReAct = Reasoning + Acting
+
+![[Pasted image 20260215020319.png]]
+
+这个过程直接封装在eino 框架的 react 库中
+
+好的，让我从代码层面详细讲解 Tool 部分。
+
+---
+
+## Tool 核心概念
+
+### 一、Tool 的本质 = 给 LLM 用的"函数"
+
+```
+传统函数定义:
+┌─────────────────────────────────────┐
+│  func exec(command string) string  │
+│                                     │
+│  - 函数名: exec                    │
+│  - 参数: command (string)          │
+│  - 返回值: string                 │
+│  - 实现: 执行 shell 命令           │
+└─────────────────────────────────────┘
+
+LLM Tool 定义:
+┌─────────────────────────────────────┐
+│  Name: "exec"                      │
+│  Description: "执行 shell 命令"    │
+│  Parameters: {                      │
+│    command: {                       │
+│      type: "string",               │
+│      required: true                │
+│    }                               │
+│  }                                 │
+│  Run(): 执行并返回结果              │
+└─────────────────────────────────────┘
+```
+
+---
+
+### 二、Tool 的三个要素
+
+让我结合代码来看：
+
+#### 1. Name（名称）
+
+```go
+// tool/exec.go
+func (t *ExecTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
+    return &schema.ToolInfo{
+        Name: "exec",  // ← 工具名称
+    }
+}
+```
+
+**作用**：让 LLM 知道"这个工具叫什么名字"
+
+**LLM 收到的信息**：
+```
+可用工具:
+- exec
+```
+
+---
+
+#### 2. Description（描述）
+
+```go
+// tool/exec.go
+func (t *ExecTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
+    return &schema.ToolInfo{
+        Name: "exec",
+        Desc: "执行 shell 命令并返回输出结果。警告：此工具具有危险性，请仅在确认安全的情况下使用。",
+    }
+}
+```
+
+**作用**：让 LLM 理解"什么情况下应该用这个工具"
+
+**LLM 收到的信息**：
+```
+工具说明:
+- exec: 执行 shell 命令并返回输出结果
+```
+
+---
+
+#### 3. Parameters（参数定义）
+
+```go
+// tool/exec.go
+func (t *ExecTool) Info(ctx context.Context) (*schema.ToolInfo, error) {
+    return &schema.ToolInfo{
+        Name: "exec",
+        Desc: "执行 shell 命令...",
+        ParamsOneOf: schema.NewParamsOneOfByParams(map[string]*schema.ParameterInfo{
+            "command": {           // ← 参数名
+                Desc:     "要执行的 shell 命令",  // ← 参数说明
+                Type:     schema.String,          // ← 参数类型
+                Required: true,                   // ← 是否必需
+            },
+        }),
+    }
+}
+```
+
+**作用**：让 LLM 知道"怎么传参数"
+
+**LLM 收到的信息**：
+```
+参数:
+- command: string (必需) - 要执行的 shell 命令
+```
+
+---
+
+### 三、LLM 如何知道调用哪个 Tool？
+
+这是一个关键问题：**LLM 并不真正"理解"代码，它是根据描述来决定的！**
+
+#### 发送给 LLM 的完整内容
+
+```go
+// 当用户说 "列出文件" 时，Eino 框架会自动构建这样的消息：
+
+messages := []Message{
+    {
+        Role: "user",
+        Content: "列出当前目录的文件",
+    },
+    {
+        Role: "system",
+        Content: `
+可用工具:
+1. exec - 执行 shell 命令
+   参数: command (string, 必需)
+
+你是一个助手。
+        `,
+    },
+}
+
+// 发送给 LLM
+```
+
+#### LLM 的"思考"过程（简化版）
+
+```
+用户: "列出当前目录的文件"
+
+LLM 分析:
+1. 用户想查看文件列表
+2. 我知道有个叫 "exec" 的工具可以执行 shell 命令
+3. "ls -la" 命令可以列出文件
+4. 我应该调用 exec 工具，参数是 command="ls -la"
+
+LLM 返回:
+{
+  tool_calls: [
+    {
+      name: "exec",
+      arguments: {"command": "ls -la"}
+    }
+  ]
+}
+```
+
+---
+
+### 四、Tool 的执行过程
+
+#### 1. Eino 框架解析 LLM 响应
+
+```go
+// LLM 返回的是 JSON 格式的调用请求
+{
+  "name": "exec",
+  "arguments": "{\"command\": \"ls -la\"}"
+}
+```
+
+#### 2. 框架调用 Tool 的 Run 方法
+
+```go
+// Eino 框架内部大概是这样:
+func executeTool(tool Tool, llmResponse LLMResponse) string {
+    // 1. 获取参数
+    arguments := llmResponse.tool_calls[0].arguments  // "{\"command\": \"ls -la\"}"
+    
+    // 2. 调用 Tool 的 InvokableRun 方法
+    result := tool.InvokableRun(ctx, arguments)
+    
+    // 3. 返回结果
+    return result
+}
+```
+
+#### 3. 我们的 ExecTool 实际执行
+
+```go
+// tool/exec.go
+func (t *ExecTool) InvokableRun(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
+    
+    // 步骤1: 解析参数 JSON
+    // argumentsInJSON = "{\"command\": \"ls -la\"}"
+    var params struct{ Command string }
+    json.Unmarshal([]byte(argumentsInJSON), &params)
+    // params.Command = "ls -la"
+    
+    // 步骤2: 安全检查（防止危险命令）
+    if guardErr := t.guardCommand(params.Command); guardErr != "" {
+        return "", fmt.Errorf(guardErr)
+    }
+    
+    // 步骤3: 真的执行 shell 命令！
+    cmd := exec.CommandContext(ctx, "sh", "-c", params.Command)
+    output, _ := cmd.CombinedOutput()
+    // output = "total 8\ndrwxr-xr-x  3 ihoo staff  96 Feb 14 21:44 .\ndrwxr-xr-x  1 ihoo staff  96 Feb 14 21:44 ..\nagent_test.go\n"
+    
+    // 步骤4: 返回结果
+    return string(output), nil
+}
+```
+
+---
+
+### 五、完整流程图解
+
+```
+用户: "列出当前目录文件"
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Eino 框架构建消息                                      │
+│  (包含 Tool 描述)                                       │
+└─────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  LLM 分析                                               │
+│  "用户要查看文件 → 用 exec 工具 → 参数 ls -la"          │
+└─────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  LLM 返回 Tool Call                                    │
+│  {name: "exec", arguments: {"command": "ls -la"}}     │
+└─────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Eino 框架解析并调用 ExecTool.InvokableRun()           │
+│  参数: argumentsInJSON = "{\"command\": \"ls -la\"}"   │
+└─────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  ExecTool.InvokableRun() 内部:                         │
+│  1. json.Unmarshal → params.Command = "ls -la"         │
+│  2. 安全检查 → 通过                                     │
+│  3. exec.Command("sh", "-c", "ls -la") → 执行!       │
+│  4. 返回 output = "total 8\nagent_test.go\n"           │
+└─────────────────────────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────────────────────────┐
+│  Eino 把 Tool 结果发给 LLM                             │
+│  LLM 生成最终回复                                       │
+└─────────────────────────────────────────────────────────┘
+         │
+         ▼
+   AI: "当前目录有 1 个文件: agent_test.go"
+```
+
+
 **tool 和 skill 一样都是渐进式披露的哲学**
 
 没有 tool
@@ -33,4 +313,3 @@ Agent还有 model 字段是为了能够在运行时切换
 
 有 tool
 ![[Pasted image 20260214220243.png|500]]
-
