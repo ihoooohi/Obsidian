@@ -28,7 +28,9 @@ Agent还有 model 字段是为了能够在运行时切换
 
 **tool 和 skill 一样都是渐进式披露的哲学**
 
+没有 tool
+![[Pasted image 20260214220138.png|500]]
 
-
-
+有 tool
+![[Pasted image 20260214220243.png|500]]
 
