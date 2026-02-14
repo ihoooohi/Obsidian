@@ -13,5 +13,16 @@
 
 message --> chatmodel --> stream
 
+```go
+type Agent struct {
+	chatModel *openai.ChatModel
+	model string
+}
+```
+
+Agent还有 model 字段是为了能够在运行时切换
+
+编写 test 文件
+
 
 
