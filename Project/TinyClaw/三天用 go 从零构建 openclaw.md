@@ -7,5 +7,9 @@
 
 实现 agent 模块
 
-第一步先创建配置文件`config.go`
+第一步先创建配置文件`config.go` 重要的函数是 `LoadConfig()`，使其能传递大模型所需的配置，apikey，model，baseurl
+
+第二步创建 chatmodel，传入 config 
+
+
 
