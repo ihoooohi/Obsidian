@@ -11,5 +11,7 @@
 
 第二步创建 chatmodel，传入 config 
 
+message --> chatmodel --> stream
+
 
 
