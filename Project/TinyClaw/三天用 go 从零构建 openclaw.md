@@ -7,6 +7,8 @@
 
 实现 agent 模块
 
+在 Eino 中，要实现 Agent 主要需要两个核心部分：ChatModel 和 Tool。[https://www.cloudwego.io/zh/docs/eino/quick_start/agent_llm_with_tools/]
+
 第一步先创建配置文件`config.go` 重要的函数是 `LoadConfig()`，使其能传递大模型所需的配置，apikey，model，baseurl
 
 第二步创建 chatmodel，传入 config 
@@ -22,7 +24,11 @@ type Agent struct {
 
 Agent还有 model 字段是为了能够在运行时切换
 
-编写 test 文件
+第三步，给 ai 接上手脚，编写各式各样的 tool，使用 ReAct 模式
+
+**tool 和 skill 一样都是渐进式披露的哲学**
+
+
 
 
 
