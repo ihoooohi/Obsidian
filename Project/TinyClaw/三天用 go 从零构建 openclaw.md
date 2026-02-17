@@ -315,3 +315,17 @@ func (t *ExecTool) InvokableRun(ctx context.Context, argumentsInJSON string, opt
 ![[Pasted image 20260214220243.png|500]]
 
 eino 框架有三种创建 tool 的方式
+
+手动实现
+手动实现 `tool.InvokableTool`
+需要手动实现`Info()`方法和`InvokableRun()`方法
+
+半自动实现
+`tool/utils.NewTool`
+不用自己实现接口，需要自己手动实现 schema
+一个`info := &schema.Info{}`
+一个执行函数`func()`
+
+全自动实现
+`toolutils.InferTool`
+输入name，desc，和一个执行函数即可，执行函数的输入参数是个结构体，这个结构体只要绑定 json 的 tag，就能被自动推断
