@@ -313,3 +313,5 @@ func (t *ExecTool) InvokableRun(ctx context.Context, argumentsInJSON string, opt
 
 有 tool
 ![[Pasted image 20260214220243.png|500]]
+
+eino 框架有三种创建 tool 的方式
