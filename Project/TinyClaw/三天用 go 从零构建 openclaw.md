@@ -444,8 +444,88 @@ type Gateway struct {
 1.回复的消息重复发送两次
 2.之前发过的消息已经回复过了，过了一会又给我回复一遍
 
-|方案|改动|效果|
-|---|---|---|
-|去重|Gateway 层加缓存|治标不治本|
-|异步处理|Channel 层改成异步|从根本解决|
-|消息队列|引入 Bus|更健壮，但改动大|
+| 方案   | 改动            | 效果       |
+| ---- | ------------- | -------- |
+| 去重   | Gateway 层加缓存  | 治标不治本    |
+| 异步处理 | Channel 层改成异步 | 从根本解决    |
+| 消息队列 | 引入 Bus        | 更健壮，但改动大 |
+```go
+// feishu.go 第 197-207 行
+func (c *FeishuChannel) handleMessageReceive(_ context.Context, event *larkim.P2MessageReceiveV1) error {
+    // ... 解析消息 ...
+    
+    if c.handler != nil {
+        c.handler(context.Background(), InboundMessage{...})  // ← 同步阻塞！
+    }
+    
+    return nil  // ← ACK 在这里才发送，太晚了！
+}
+```
+
+```go
+func (c *FeishuChannel) handleMessageReceive(_ context.Context, event *larkim.P2MessageReceiveV1) error {
+    // ... 解析消息 ...
+    
+    if c.handler != nil {
+        go c.handler(context.Background(), InboundMessage{...})  // ← 异步！不阻塞！
+    }
+    
+    return nil  // ← 立即返回，快速 ACK
+}
+```
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                    消息处理流程                             │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   阶段 1：接收消息                                          │
+│   ┌─────────────────────────────────────┐                  │
+│   │ 飞书推送 → 服务收到 → 返回 ACK       │  ← 快速！毫秒级  │
+│   └─────────────────────────────────────┘                  │
+│                                                             │
+│   阶段 2：处理消息                                          │
+│   ┌─────────────────────────────────────┐                  │
+│   │ 调用 Agent → 生成回复 → 发送给用户  │  ← 慢！秒级      │
+│   └─────────────────────────────────────┘                  │
+│                                                             │
+│   ACK 只关心阶段 1，不关心阶段 2                            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+并发安全问题
+```go
+// 当前代码
+if c.handler != nil {
+    go c.handler(context.Background(), InboundMessage{...})  // 无限制并发！
+}
+```
+
+大量消息同时到达，启动大量 goroutine，可能导致：
+
+- 内存耗尽
+- CPU 100%
+- 服务崩溃
+
+可以通过控制并发量来解决，如
+```go
+// 方案 A：简单信号量（不用 Bus）
+var sem = make(chan struct{}, 3)  // 最多 3 个并发
+
+func (c *FeishuChannel) handleMessageReceive(...) error {
+    if c.handler != nil {
+        go func() {
+            sem <- struct{}{}        // 获取信号量
+            defer func() { <-sem }() // 释放信号量
+            c.handler(...)
+        }()
+    }
+    return nil
+}
+```
+
+但是这样就很死板，限制死了并发数量，引入 bus 可以解决这个问题
+
+![[Pasted image 20260221142412.png]]
+
