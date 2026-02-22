@@ -7,34 +7,37 @@
 
 实现 agent 模块
 
-在 Eino 中，要实现 Agent 主要需要两个核心部分：ChatModel 和 Tool。[https://www.cloudwego.io/zh/docs/eino/quick_start/agent_llm_with_tools/]
-
 第一步先创建配置文件`config.go` 重要的函数是 `LoadConfig()`，使其能传递大模型所需的配置，apikey，model，baseurl
 
-第二步创建 chatmodel，传入 config 
+### 什么是 ReAct Agent
 
-message --> chatmodel --> stream
-
-```go
-type Agent struct {
-	chatModel *openai.ChatModel
-	model string
-}
-```
-
-Agent还有 model 字段是为了能够在运行时切换
-
-第三步，给 ai 接上手脚，编写各式各样的 tool，使用 ReAct 模式
-
-### ReAct
- 
-什么是 ReAct？
- 
 ReAct = Reasoning + Acting
 
 ![[Pasted image 20260215020319.png]]
 
 这个过程直接封装在eino 框架的 react 库中
+
+### Eino 框架介绍
+
+`agent.go`的目的是创建出一个 ReAct Agent，能够自己推理且执行的 agent，有大脑又有手有脚的 agent，所以主要函数就是`NewAgent()`, 返回类型就用`react`框架中的`*react.agent`
+```go
+func NewAgent() (*react.agent, error){}
+```
+
+那么具体如何用 eino 框架中的 react 来创建出一个能ReAct的Agent呢？
+
+在 Eino 中，要实现 Agent 主要需要两个核心部分：ChatModel 和 Tool。[https://www.cloudwego.io/zh/docs/eino/quick_start/agent_llm_with_tools/]
+
+创建ChatModel
+[https://www.cloudwego.io/zh/docs/eino/core_modules/components/chat_model_guide/]
+
+引入Tool
+
+第三步，给 ai 接上手脚，编写各式各样的 tool，使用 ReAct 模式
+
+
+ 
+
 
 好的，让我从代码层面详细讲解 Tool 部分。
 
