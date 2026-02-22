@@ -35,13 +35,8 @@ func NewAgent() (*react.agent, error){}
 
 引入Tool
 
-第三步，给 ai 接上手脚，编写各式各样的 tool，使用 ReAct 模式
+第三步，给 ai 接上手脚，编写各式各样的 tool
 
-
-
-好的，让我从代码层面详细讲解 Tool 部分。
-
----
 
 ## Tool 核心概念
 
