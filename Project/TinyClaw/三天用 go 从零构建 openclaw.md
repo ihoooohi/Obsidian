@@ -31,12 +31,12 @@ func NewAgent() (*react.agent, error){}
 创建ChatModel
 [https://www.cloudwego.io/zh/docs/eino/core_modules/components/chat_model_guide/]
 
+附录：context 标准库
+
 引入Tool
 
 第三步，给 ai 接上手脚，编写各式各样的 tool，使用 ReAct 模式
 
-
- 
 
 
 好的，让我从代码层面详细讲解 Tool 部分。
