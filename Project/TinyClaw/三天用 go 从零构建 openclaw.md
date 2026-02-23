@@ -37,12 +37,40 @@ func NewAgent() (*react.agent, error){}
 
 第三步，给 ai 接上手脚，编写各式各样的 tool
 
+tool calling用的是json语言
+所谓的ai的工具调用的实质是ai生成相应的json文本，程序解析这段json，把其中的字段作为参数，然后由外部程序来执行对应的函数，**ai本身没有执行能力**
+
 使用`toolutils.InferTool`来创建tool
 
 深入理解eino框架中的tool
+eino用接口定义工具的规范
+```go
+// 基础工具接口（所有工具必须实现）
+type BaseTool interface {
+    Info(ctx context.Context) (*schema.ToolInfo, error) // 返回工具说明书
+}
 
-tool calling用的是json语言
-所谓的ai的工具调用的实质是ai生成相应的json文本，程序解析这段json，把其中的字段作为参数，然后由外部程序来执行对应的函数，**ai本身没有执行能力**
+// 同步工具接口（最常用）
+type InvokableTool interface {
+    BaseTool // 继承基础要求
+    InvokableRun(ctx context.Context, argumentsInJSON string, opts ...Option) (string, error)
+}
+
+// 流式工具接口（实时返回结果）
+type StreamableTool interface {
+    BaseTool
+    StreamableRun(ctx context.Context, argumentsInJSON string, opts ...Option) 
+        (*schema.StreamReader[string], error)
+}
+```
+AI Agent需要知道"这个工具能干嘛、要传什么参数"，全靠ToolInfo：
+```go
+type ToolInfo struct {
+    Name        string            // 工具名称（AI调用时的标识）
+    Desc        string            // 工具功能描述
+    ParamsOneOf *ParamsOneOf      // 参数规则
+}
+```
 ## Tool 核心概念
 
 ### 一、Tool 的本质 = 给 LLM 用的"函数"
