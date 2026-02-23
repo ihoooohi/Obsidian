@@ -38,6 +38,6 @@ Two routing algorithms
 
 problem -- **count-to-infinity**
 
-- **1. 路由器只信邻居**
-- **2.邻居可能信息过期**
-- **3.坏消息没有“刹车机制”**
+The count-to-infinity problem occurs when a link fails
+Because routers only know the distance to destination via neighbors, not the full path. So they may incorrectly believe the neighbor still has valid route
+As a result, routers still keep increasing step by step until it reaches infinity, leading to routing loops
