@@ -37,7 +37,12 @@ func NewAgent() (*react.agent, error){}
 
 第三步，给 ai 接上手脚，编写各式各样的 tool
 
+使用`toolutils.InferTool`来创建tool
 
+深入理解eino框架中的tool
+
+tool calling用的是json语言
+所谓的ai的工具调用的实质是ai生成相应的json文本，程序解析这段json，把其中的字段作为参数，然后由外部程序来执行对应的函数，**ai本身没有执行能力**
 ## Tool 核心概念
 
 ### 一、Tool 的本质 = 给 LLM 用的"函数"
@@ -210,48 +215,7 @@ LLM 返回:
 }
 ```
 
-#### 2. 框架调用 Tool 的 Run 方法
 
-```go
-// Eino 框架内部大概是这样:
-func executeTool(tool Tool, llmResponse LLMResponse) string {
-    // 1. 获取参数
-    arguments := llmResponse.tool_calls[0].arguments  // "{\"command\": \"ls -la\"}"
-    
-    // 2. 调用 Tool 的 InvokableRun 方法
-    result := tool.InvokableRun(ctx, arguments)
-    
-    // 3. 返回结果
-    return result
-}
-```
-
-#### 3. 我们的 ExecTool 实际执行
-
-```go
-// tool/exec.go
-func (t *ExecTool) InvokableRun(ctx context.Context, argumentsInJSON string, opts ...tool.Option) (string, error) {
-    
-    // 步骤1: 解析参数 JSON
-    // argumentsInJSON = "{\"command\": \"ls -la\"}"
-    var params struct{ Command string }
-    json.Unmarshal([]byte(argumentsInJSON), &params)
-    // params.Command = "ls -la"
-    
-    // 步骤2: 安全检查（防止危险命令）
-    if guardErr := t.guardCommand(params.Command); guardErr != "" {
-        return "", fmt.Errorf(guardErr)
-    }
-    
-    // 步骤3: 真的执行 shell 命令！
-    cmd := exec.CommandContext(ctx, "sh", "-c", params.Command)
-    output, _ := cmd.CombinedOutput()
-    // output = "total 8\ndrwxr-xr-x  3 ihoo staff  96 Feb 14 21:44 .\ndrwxr-xr-x  1 ihoo staff  96 Feb 14 21:44 ..\nagent_test.go\n"
-    
-    // 步骤4: 返回结果
-    return string(output), nil
-}
-```
 
 ---
 
@@ -327,6 +291,12 @@ eino 框架有三种创建 tool 的方式
 全自动实现
 `toolutils.InferTool`
 输入name，desc，和一个执行函数即可，执行函数的输入参数是个结构体，这个结构体只要绑定 json 的 tag，就能被自动推断
+
+utils.InferTool 的工作原理 ：
+
+- 自动从 execCommand 函数的参数（ execInput 结构体）推断出参数schema
+- 生成JSON Schema供LLM理解tool的参数格式
+- 返回一个实现了 tool.InvokableTool 接口的tool实例
 
 ## 第三天
 
