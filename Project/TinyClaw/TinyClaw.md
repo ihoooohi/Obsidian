@@ -65,6 +65,7 @@ Data Flow (Gateway Mode):
 - long term memory
 - skill （后期功能）
 - cron(后期功能)
+- openai格式
 
 写做最小的mvp，用飞书能查询服务器状态，
 ## 项目模块
