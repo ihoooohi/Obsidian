@@ -1,3 +1,5 @@
+![[7a3bac37d0b2230adf0b0e36738b996c.jpg]]
+
 ## Shared Memory
 ![[images/Pasted image 20260114104257.png|300]]
 mmap
