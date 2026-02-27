@@ -34,3 +34,52 @@ func (v *Byteview) Len() int
 |值接收者|✅|✅|
 |指针接收者|❌|✅|
 
+## go一律是值传递
+
+Go 里函数参数 **永远是值拷贝**。
+
+```go
+func f(x int) {  
+    x = 100  
+}  
+  
+a := 10  
+f(a)  
+fmt.Println(a) // 还是 10
+```
+
+因为传的是 a 的副本。
+
+==对于值类型（int、struct等），必须用指针才能修改外部变量  
+对于引用类型（slice、map、chan等），不用指针也可以修改其内部数据==
+
+## go语言的陷阱
+
+做回溯时
+
+将path数组加进res二维数组时，不能直接
+```go
+*res = append(*res, path)
+```
+因为path这个slice底层是指针，slice是引用类型，之前加进去的值会随着path改动而改动，可能最后res的值会是都一样的
+```text
+[[3 2 1]
+ [3 2 1]
+ [3 2 1]
+ ...]
+```
+必须每次先copy一份再加进去
+```go
+tmp := make([]int, len(nums))
+copy(tmp, path)
+*res = append(*res, tmp)
+```
+这样每次都是新数组，新内存，不共享底层数据
+
+c++就没这个困扰，vector 的拷贝构造函数执行深一层复制，**深拷贝**，所以 push_back(path) 会复制元素，不共享底层数组
+```c++
+res.push_back(path);
+```
+
+==浅拷贝：指向同一个内存  
+深拷贝：指向两个不同的内存==
