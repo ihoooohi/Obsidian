@@ -1,54 +1,5 @@
 好！今天进入 **Day 2：JWT鉴权 + 缓存自愈机制**
 
-这是面试必问的内容，必须完全搞懂！
-
----
-
-## 1. 先看整体鉴权流程
-
-        
-            
-toolName: view_files
-            
-status: success
-          
-            
-filePath: /home/ihoo/Mypoject/feedsystem_video_go/backend/internal/auth/jwt.go
-          
-
-
-        
-            
-toolName: view_files
-            
-status: success
-          
-            
-filePath: /home/ihoo/Mypoject/feedsystem_video_go/backend/internal/middleware/jwt/jwt.go
-          
-现在看登录时Token如何存储：
-
-        
-            
-toolName: search_by_regex
-            
-status: success
-          
-query: func.*Login
-          
-
-
-        
-            
-toolName: view_files
-            
-status: success
-          
-            
-filePath: /home/ihoo/Mypoject/feedsystem_video_go/backend/internal/account/service.go
-          
-好的！我继续为你深入讲解 **JWT鉴权 + 缓存自愈机制**，这部分是面试必问的重点！
-
 ---
 
 ## 🔐 Day 2：JWT鉴权 + 缓存自愈机制
@@ -203,28 +154,152 @@ protectedLikeGroup.Use(jwt.JWTAuth(...))  // 必须登录
 
 ---
 
-### 2.5 常见面试追问
 
-| 追问 | 回答要点 |
+
+
+
+## 📌 核心代码架构
+
+### 1. 两种鉴权模式（见 [jwt.go](file:///Users/ihoo/GolandProjects/feedsystem_video_go/backend/internal/middleware/jwt/jwt.go)）
+
+| 模式 | 用途 | 区别 |
+|------|------|------|
+| **JWTAuth** | 强制登录（点赞、评论等） | 无Token直接返回401 |
+| **SoftJWTAuth** | 可选登录（刷Feed流） | 无Token也放行，继续处理 |
+
+---
+
+### 2. 缓存自愈机制流程图
+
+```
+请求进来 ──▶ 解析 JWT Token ──▶ 提取 accountID
+                     │
+                     ▼
+              先查 Redis (account:{id})
+                     │
+           ┌────────┴────────┐
+           │                 │
+        命中                未命中/失败
+           │                 │
+           ▼                 ▼
+     比较 Token 是否一致   查 MySQL 兜底
+           │                 │
+           │           ┌────┴────┐
+           │           │         │
+           ▼           ▼         ▼
+        验证通过    查到Token   未找到/不匹配
+           │           │         │
+           │           ▼         │
+           │     回填 Redis      │
+           │     (自愈机制)      │
+           │           │         │
+           └───────────┴────────┘
+                     │
+                     ▼
+              设置 context.accountID
+                     │
+                     ▼
+               放行进入业务
+```
+
+---
+
+### 3. 关键代码实现
+
+**登录时双写**（[service.go#L104-117](file:///Users/ihoo/GolandProjects/feedsystem_video_go/backend/internal/account/service.go#L104-L117)）：
+
+```go
+func (as *AccountService) Login(ctx context.Context, username, password string) (string, error) {
+    // 1. 验证密码
+    // 2. 生成 JWT Token
+    token, _ := auth.GenerateToken(account.ID, account.Username)
+    
+    // 3. 存 MySQL（持久化）
+    as.accountRepository.Login(ctx, account.ID, token)
+    
+    // 4. 存 Redis（高性能）
+    as.cache.SetBytes(cacheCtx, fmt.Sprintf("account:%d", account.ID), []byte(token), 24*time.Hour)
+    
+    return token, nil
+}
+```
+
+**验证时的自愈逻辑**（[jwt.go#L79-117](file:///Users/ihoo/GolandProjects/feedsystem_video_go/backend/internal/middleware/jwt/jwt.go#L79-L117)）：
+
+```go
+func check(c *gin.Context, claims *auth.Claims, tokenString string, ...) {
+    key := fmt.Sprintf("account:%d", claims.AccountID)
+    
+    // 先查 Redis
+    b, err := cache.GetBytes(cacheCtx, key)
+    if err == nil {
+        // 命中，直接用
+        if string(b) != tokenString {
+            c.AbortWithStatusJSON(http.StatusUnauthorized, ...)
+            return
+        }
+        c.Set("accountID", claims.AccountID)
+        c.Next()
+        return
+    }
+    
+    // Redis 没有/失败 → 查 MySQL 兜底
+    accountInfo, err := accountRepo.FindByID(c.Request.Context(), claims.AccountID)
+    if accountInfo.Token != tokenString {
+        c.AbortWithStatusJSON(http.StatusUnauthorized, ...)
+        return
+    }
+    
+    // 查到后回填 Redis（自愈）
+    cache.SetBytes(cacheCtx, key, []byte(tokenString), 24*time.Hour)
+    
+    c.Set("accountID", claims.AccountID)
+    c.Next()
+}
+```
+
+---
+
+## 🎯 面试话术（直接背）
+
+面试官让你介绍项目鉴权时，直接说：
+
+> "我的项目使用 JWT Token 鉴权，实现了**缓存自愈机制**：
+>
+> **1. 登录时双写 Token**：
+> - MySQL 持久化存储（用于兜底）
+> - Redis 高性能缓存（key 为 `account:{id}`，24小时过期）
+>
+> **2. 验证时优先读 Redis**：
+> - 先查 Redis，命中则直接使用
+> - Redis 未命中/故障 → 回退查 MySQL
+> - MySQL 查到后**回填 Redis**，实现自愈
+>
+> **3. 两种鉴权模式**：
+> - `JWTAuth`：强制登录场景（点赞、评论、发社交动态）
+> - `SoftJWTAuth`：可选登录（浏览 Feed 流），无 Token 也能继续
+>
+> **4. 这样做的好处**：
+> - 99% 请求走 Redis，性能高
+> - Redis 故障不影响服务，自动降级 MySQL
+> - 每次验证都会自愈缓存，Redis 里的数据始终是最新的"
+
+---
+
+## 💡 面试官可能追问的问题
+
+| 问题 | 回答要点 |
 |------|----------|
+| **Token 过期了怎么办？** | JWT 本身有过期时间(24h)，前端收到401后引导用户重新登录 |
+| **如何处理 Token 失效/注销？** | 登出时删除 Redis 中的 Token，MySQL 中 Token 设为空，下次验证就会失败 |
+| **为什么不用 Redis 存用户信息？** | 只存 Token 用于验证状态，用户信息太大且不需要每次都完整获取 |
+| **Redis 和 MySQL 数据一致性？** | 登录/登出/改名时同时写两边，验证时以 MySQL 为准并回填 Redis |
+| **如何防止 Token 盗用？** | Token 存在 MySQL，每次验证都比对；登出立即删 Redis |
+
+| 追问                  | 回答要点                         |
+| ------------------- | ---------------------------- |
 | Token存在Redis被劫持怎么办？ | Token存MySQL做最终验证，Redis只是缓存加速 |
-| 为什么要两份存储？ | Redis快但可能丢数据，MySQL慢但可靠 |
-| Token过期了怎么办？ | 前端引导重新登录 |
-| 修改密码后Token还有效吗？ | 会清空Token，强制下线 |
-| Redis和MySQL如何保证一致性？ | 先写MySQL，再删Redis缓存 |
-
----
-
-### ✅ 今日作业
-
-1. **能画出登录 + 验证的完整流程图**
-2. **能说出"缓存自愈"是什么意思**
-3. **能解释JWTAuth和SoftJWTAuth的区别**
-
----
-
-### 📅 明天预告：Day 3 - 点赞流程 + MQ异步处理
-
-这是项目最核心的部分，也是面试最加分的亮点！
-
-准备好了喊我，我们继续！ 🚀
+| 为什么要两份存储？           | Redis快但可能丢数据，MySQL慢但可靠       |
+| Token过期了怎么办？        | 前端引导重新登录                     |
+| 修改密码后Token还有效吗？     | 会清空Token，强制下线                |
+| Redis和MySQL如何保证一致性？ | 先写MySQL，再删Redis缓存            |
