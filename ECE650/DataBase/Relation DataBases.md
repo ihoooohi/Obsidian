@@ -1,6 +1,9 @@
 
 ## Definition
 
+关系：表
+relation：table
+
 ```mermaid
 %%{init: {"flowchart": {"htmlLabels": false, "nodeSpacing": 60, "rankSpacing": 80}}}%%
 flowchart TB
