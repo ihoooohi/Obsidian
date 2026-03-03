@@ -69,7 +69,7 @@ MacFactory --> MacTextField : creates
 ```
 
 
-## Vistor Parttern
+## Vistor Pattern
 
 ```mermaid
 classDiagram
