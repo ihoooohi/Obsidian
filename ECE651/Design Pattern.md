@@ -1,3 +1,74 @@
+
+## Observer Pattern
+
+```mermaid
+classDiagram
+
+class Subject{
+  - observers: List~Observer~
+  + attach(o: Observer)
+  + detach(o: Observer)
+  + notify()
+}
+
+class Observer{
+  <<interface>>
+  + update()
+}
+
+class ConcreteSubject{
+  - state: int
+  + getState()
+  + setState(int)
+}
+
+class ConcreteObserver{
+  - subject: Subject
+  + update()
+}
+
+Subject "1" --> "*" Observer : observers
+ConcreteSubject --|> Subject
+ConcreteObserver ..|> Observer
+ConcreteObserver --> Subject
+```
+
+```mermaid
+classDiagram
+
+class Clock{
+  + getTime()
+  + tick()
+}
+
+class AlarmClock{
+  - alarmTime
+  - toPlay: List~Playable~
+  + setAlarm()
+  + addPlayable()
+  + tick()
+}
+
+class Playable{
+  <<interface>>
+  + play()
+}
+
+class Sound{
+  + play()
+}
+
+class VisualAnimation{
+  + play()
+}
+
+Clock <|-- AlarmClock
+AlarmClock --> "*" Playable : notify
+Sound ..|> Playable
+VisualAnimation ..|> Playable
+```
+## Adapter Pattern
+
 ## Abstract Factory
 ```mermaid
 classDiagram
@@ -69,6 +140,9 @@ MacFactory --> MacTextField : creates
 ```
 
 
+## Singleton Pattern
+
+## Double Checked Locking
 ## Vistor Pattern
 
 ```mermaid
