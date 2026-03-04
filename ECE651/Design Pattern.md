@@ -1,37 +1,7 @@
 
 ## Observer Pattern
 
-```mermaid
-classDiagram
-
-class Subject{
-  - observers: List~Observer~
-  + attach(o: Observer)
-  + detach(o: Observer)
-  + notify()
-}
-
-class Observer{
-  <<interface>>
-  + update()
-}
-
-class ConcreteSubject{
-  - state: int
-  + getState()
-  + setState(int)
-}
-
-class ConcreteObserver{
-  - subject: Subject
-  + update()
-}
-
-Subject "1" --> "*" Observer : observers
-ConcreteSubject --|> Subject
-ConcreteObserver ..|> Observer
-ConcreteObserver --> Subject
-```
+解决违反 Open/Close 原则
 
 ```mermaid
 classDiagram
@@ -67,8 +37,12 @@ AlarmClock --> "*" Playable : notify
 Sound ..|> Playable
 VisualAnimation ..|> Playable
 ```
+![[8e49e981c89ce0c9e8e6720a121eb67f.jpg]]
 ## Adapter Pattern
 
+解决违反Single Responsibility Principle
+
+![[983d36bbaab7c9572a8051ef36de191b.jpg]]
 ## Abstract Factory
 ```mermaid
 classDiagram
