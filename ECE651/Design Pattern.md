@@ -113,7 +113,59 @@ MacFactory --> MacButton : creates
 MacFactory --> MacTextField : creates
 ```
 
+### 违反设计原则
+#### 1 违反 DRY（Don't Repeat Yourself）
 
+代码重复：
+
+toybox.empty();  
+toybox.add(t);
+
+每个动物都写一遍。
+
+如果逻辑变了，要改很多地方。
+
+---
+
+#### 2 违反 Open / Closed Principle
+
+如果增加动物：
+
+Tiger  
+Monkey  
+Elephant
+
+就要修改：
+
+AnimalEnclosure
+
+即：
+
+else if(animalType.equals("tiger")){ ... }
+
+这违反：
+
+Open for extension  
+Closed for modification
+
+---
+
+#### 3 违反 Dependency Inversion
+
+现在代码直接依赖：
+
+Meat  
+Fish  
+Ball  
+Ring
+
+而不是依赖接口。
+
+也就是：
+
+high level class  
+depends on  
+low level classes
 ## Singleton Pattern
 
 ## Double Checked Locking
