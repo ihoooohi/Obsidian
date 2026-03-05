@@ -6,12 +6,12 @@
 
 ### 4.1 4种Feed流一览
 
-| 接口 | 排序方式 | 分页方式 | 登录要求 | 缓存 |
-|------|----------|----------|----------|------|
-| `/feed/listLatest` | 时间倒序 | 时间游标 | SoftJWTAuth | ✅ |
-| `/feed/listLikesCount` | 点赞数倒序 | 复合游标 | SoftJWTAuth | ❌ |
-| `/feed/listByPopularity` | 热度排序 | 热榜快照 | SoftJWTAuth | ✅ |
-| `/feed/listByFollowing` | 关注关系 | 关注列表聚合 | JWTAuth | ❌ |
+| 接口                       | 排序方式  | 分页方式   | 登录要求        | 缓存  |
+| ------------------------ | ----- | ------ | ----------- | --- |
+| `/feed/listLatest`       | 时间倒序  | 时间游标   | SoftJWTAuth | ✅   |
+| `/feed/listLikesCount`   | 点赞数倒序 | 复合游标   | SoftJWTAuth | ❌   |
+| `/feed/listByPopularity` | 热度排序  | 热榜快照   | SoftJWTAuth | ✅   |
+| `/feed/listByFollowing`  | 关注关系  | 关注列表聚合 | JWTAuth     | ❌   |
 
 ---
 
