@@ -377,7 +377,7 @@ Content-Type: application/json
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-# 🎯 用户继续刷 → 翻页
+## 🎯 用户继续刷 → 翻页
 ```text
 用户往下滑 → 看完第10个视频时 -> 点击“加载更多”按钮
 
@@ -395,4 +395,44 @@ Content-Type: application/json
   WHERE create_time < 1704094800  // 查更早的视频
 
 返回下一页的10条...
+```
+
+## Redis匿名用户最新视频查询操作流程
+
+```text
+1. 用户请求 /feed/listLatest
+
+2. Redis GET feed:listLatest:limit=10:before=0
+   │
+   ├── 命中 → 直接返回JSON（1ms）
+   │
+   └── 未命中 →
+
+3. Redis SETNX lock:feed:listLatest:limit=10:before=0 "1"
+   │
+   ├── 成功（拿到锁）→
+   │   │
+   │   Redis GET 再次检查缓存
+   │   │
+   │   ├── 已有 → 返回
+   │   │
+   │   └── 没有 → 
+   │       │
+   │       MySQL SELECT * FROM videos ...
+   │       │
+   │       Redis SET feed:listLatest:limit=10:before=0 "json数据" EX 5
+   │       │
+   │       Redis DEL lock:feed:listLatest:limit=10:before=0 (释放锁)
+   │       │
+   │       返回数据
+   │
+   └── 失败（被抢走）→
+
+       等待20ms × 5次
+       │
+       Redis GET 检查缓存
+       │
+       ├── 有了 → 返回
+       │
+       └── 没有 → 查MySQL（兜底）
 ```
