@@ -48,7 +48,7 @@
 | `/feed/listByPopularity` | 热度排序 | 热榜快照 | SoftJWTAuth | ✅ |
 | `/feed/listByFollowing` | 关注关系 | 关注列表聚合 | JWTAuth | ❌ |
 
----
+ 
 
 ### 4.2 Feed 1：最新Feed流（ListLatest）
 
