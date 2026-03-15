@@ -2,6 +2,8 @@
     - ```python
 	      dummy = ListNode(-1)
       ```
+      
+      
 - **使用情况**
     - **删除节点（安全删除头节点）**
 		```python
