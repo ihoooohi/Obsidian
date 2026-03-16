@@ -228,7 +228,7 @@ T2 step2
 
 ---
 
-# 5.1 Lost Update
+## 5.1 Lost Update
 
 两个事务同时更新同一个数据。
 
@@ -270,7 +270,7 @@ T1 的更新被覆盖。
 
 ---
 
-# 5.2 Dirty Read
+## 5.2 Dirty Read
 
 事务读取了：
 
@@ -295,7 +295,7 @@ T2 读取的数据就错了。
 
 ---
 
-# 5.3 Incorrect Summary
+## 5.3 Incorrect Summary
 
 一个事务在 **统计数据**：
 
@@ -430,7 +430,7 @@ undo
 
 ---
 
-# 9.1 Atomicity
+## 9.1 Atomicity
 
 事务：
 
@@ -442,7 +442,7 @@ all or nothing
 
 ---
 
-# 9.2 Consistency
+## 9.2 Consistency
 
 事务执行前后：
 
@@ -459,7 +459,7 @@ all or nothing
 
 ---
 
-# 9.3 Isolation
+## 9.3 Isolation
 
 事务执行时：
 
@@ -482,7 +482,7 @@ all or nothing
 
 ---
 
-# 9.4 Durability
+## 9.4 Durability
 
 事务 **commit 后**：
 
