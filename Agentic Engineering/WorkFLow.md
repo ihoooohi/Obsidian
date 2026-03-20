@@ -2,4 +2,6 @@
 
 先建 git 仓库
 
+Requirement.md
+
 plan
