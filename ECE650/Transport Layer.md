@@ -8,6 +8,10 @@
 |数据链路层|frame|
 |物理层|bit|
 ![[Pasted image 20260330000427.png|688]]
+
+本质上就是：
+==**字节 → 套字节 → 传字节 → 拆字节 → 字节**==
+
 ## TCP(Transmission Control Protocol)
 
 **TCP 的本质：可靠的、面向连接的传输协议**
