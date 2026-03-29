@@ -1,4 +1,5 @@
 
+
 |层次|数据单位|
 |---|---|
 |应用层|message（消息）|
@@ -6,7 +7,7 @@
 |网络层|packet|
 |数据链路层|frame|
 |物理层|bit|
-
+![[Pasted image 20260330000427.png|688]]
 ## TCP(Transmission Control Protocol)
 
 **TCP 的本质：可靠的、面向连接的传输协议**
