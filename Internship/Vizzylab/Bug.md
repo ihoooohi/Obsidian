@@ -2,4 +2,5 @@
 - **Bug 2** Amy nanobot button 
 	- 不过有个小问题：大部分记录的 `bot_name` 都显示 "nanobot" 而不是具体的 bot 名字，说明 nanobot 容器的 `BOT_NAME` 环境变量可能没有正确设置。
 - **Bug 3** cc难度路由问题，分级路由存在问题，回复要标注使用了什么模型（sonnet，opus）cost-quality tradeoff routing
+- **Bug 4** nanobot 太慢
 
