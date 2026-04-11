@@ -2,8 +2,9 @@
 - **Bug 2** Amy nanobot button 
 	- 不过有个小问题：大部分记录的 `bot_name` 都显示 "nanobot" 而不是具体的 bot 名字，说明 nanobot 容器的 `BOT_NAME` 环境变量可能没有正确设置。
 - **Bug 3** cc难度路由问题，分级路由存在问题，回复要标注使用了什么模型（sonnet，opus）cost-quality tradeoff routing
-- **Bug 4** nanobot 太慢
-	-  Amy vs Nanobot 的 `elapsed_sec` 计时方式对比  
+### **Bug 4** nanobot 太慢
+
+#### Amy vs Nanobot 的 `elapsed_sec` 计时方式对比  
   
 Amy (OpenClaw):
 
@@ -27,7 +28,7 @@ elapsed = int(time.time() - start_time) _# 全部完成_
 
 计的是：从收到请求 → 全部处理完，包含了历史加载、prompt 组装、工具执行等所有前置工作  
   
-## 这就是为什么 shadow 的 elapsed_sec 永远大一点
+ **这就是为什么 shadow 的 elapsed_sec 永远大一点**
 
 |阶段|Amy 计时|Nanobot 计时|
 |---|---|---|
@@ -38,3 +39,7 @@ elapsed = int(time.time() - start_time) _# 全部完成_
 
 Nanobot 的计时器从更早的地方开始跑，所以数字永远大一点。不是模型更慢，是计时范围更大。
 
+**修复前**
+![[Pasted image 20260411224808.png]]
+**修复后**
+![[Pasted image 20260411224904.png]]
