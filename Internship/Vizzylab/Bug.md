@@ -39,7 +39,7 @@ elapsed = int(time.time() - start_time) _# 全部完成_
 
 Nanobot 的计时器从更早的地方开始跑，所以数字永远大一点。不是模型更慢，是计时范围更大。
 
-**修复前**
+**Before**
 ![[Pasted image 20260411224808.png]]
-**修复后**
+**After**
 ![[Pasted image 20260411224904.png]]
