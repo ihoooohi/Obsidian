@@ -43,3 +43,33 @@ Nanobot 的计时器从更早的地方开始跑，所以数字永远大一点。
 ![[Pasted image 20260411224808.png]]
 **After**
 ![[Pasted image 20260411224904.png]]
+### Bug 5 nanobot 回复质量差
+#### 现象
+
+![[Pasted image 20260414232406.png]]
+#### 原因
+核心差异在 context（上下文），不是模型能力。  
+  
+OpenClaw primary 为什么回复质量更高：  
+
+1. 完整的 system prompt — 我的 AGENTS.md、SOUL.md、USER.md、MEMORY.md 在每次对话开始时都被注入，里面有公司架构、Supabase、飞书、各种 API 的详细信息。所以你问"数据库是哪个"，我能直接列出来。
+    
+
+2. 对话历史连续 — OpenClaw 维护了完整的 session，之前你问过的每个问题和我的回答都在上下文里，所以我能引用之前的对话。
+    
+
+3. 记忆系统 — 每次对话会带上 `[Relevant memories from past conversations]`，这些是 mem0 里存的历史信息，帮我回忆之前讨论过的内容。
+    
+
+Shadow nanobot 为什么差一些：  
+
+1. context 更少 — shadow 收到的是 `shadowForward()` 转发的原始 webhook 消息，不一定带完整的 system prompt 和 session 历史。它可能只看到你当前这一条消息，没有之前的对话上下文。
+    
+
+2. 没有记忆注入 — shadow 的处理路径可能跳过了 mem0 查询和 memory file 加载，所以它对公司架构、之前讨论过的内容一无所知。
+    
+
+3. 模型可能不同 — primary 用的是 Opus 4.6，shadow 的 `SUBAGENT_MODEL` 是 Sonnet 4.6。模型能力本身就有差距。
+    
+
+一句话总结： 不是 shadow 笨，是它看到的信息比我少。同样的模型，给完整 context 和给裸消息，输出质量天差地别。Context is everything。
