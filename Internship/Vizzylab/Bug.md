@@ -73,3 +73,37 @@ Shadow nanobot 为什么差一些：
     
 
 一句话总结： 不是 shadow 笨，是它看到的信息比我少。同样的模型，给完整 context 和给裸消息，输出质量天差地别。Context is everything。
+
+### Bug 6 nanobot 没 docker 权限
+
+确认了。 当前运行的 `amy-nanobot` 容器的挂载列表里完全没有 docker socket 和 docker CLI 相关的挂载：  
+
+- ❌ `/var/run/docker.sock:/var/run/docker.sock` — 不存在
+    
+
+- ❌ `/usr/bin/docker:/usr/bin/docker:ro` — 不存在
+    
+
+- ❌ `/home/ubuntu/amy-data/prod/state:/data/state:ro` — 不存在
+    
+
+- ❌ `/home/ubuntu/amy-data/prod/workspace:/data/workspace:ro` — 不存在
+    
+
+- ❌ `/home/ubuntu/eva-data/prod/...` — 不存在
+    
+
+对比 compose 文件，这些挂载应该都有但实际都没有。  
+  
+结论很清楚： 当前运行的容器是用旧版本的 compose 文件创建的。compose 文件后来更新了（加了 docker socket、docker CLI、以及 `/data/state`、`/data/workspace` 等"Capability alignment with OpenClaw"的挂载），但容器没有重建，所以新配置没有生效。  
+### 怎么修 在服务器上跑一条命令就行：  
+
+cd /home/ubuntu/repos/VisPie_backend/auto-amy/docker && \
+
+docker compose -f docker-compose.amy-nanobot.yml up -d --force-recreate
+
+这会用最新的 compose 文件重建容器，所有新挂载就会生效，nanobot 就能访问 docker 了。
+
+### Bug 7 nanobot shadow 经常没用
+
+![[Pasted image 20260415164637.png]]
