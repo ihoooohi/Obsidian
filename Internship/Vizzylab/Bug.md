@@ -96,7 +96,7 @@ Shadow nanobot 为什么差一些：
 对比 compose 文件，这些挂载应该都有但实际都没有。  
   
 结论很清楚： 当前运行的容器是用旧版本的 compose 文件创建的。compose 文件后来更新了（加了 docker socket、docker CLI、以及 `/data/state`、`/data/workspace` 等"Capability alignment with OpenClaw"的挂载），但容器没有重建，所以新配置没有生效。  
-### 怎么修 在服务器上跑一条命令就行：  
+#### 怎么修 在服务器上跑一条命令就行：  
 
 cd /home/ubuntu/repos/VisPie_backend/auto-amy/docker && \
 
@@ -107,3 +107,67 @@ docker compose -f docker-compose.amy-nanobot.yml up -d --force-recreate
 ### Bug 7 nanobot shadow 经常没用
 
 ![[Pasted image 20260415164637.png]]
+### Bug  8 NR监控Amy
+
+要用 New Relic 监控 Amy，分两层，由浅到深：
+
+## 第一层：基础设施监控（必做）
+
+在 Amy Server (`ec2-100-29-3-1`) 宿主机上装 Infrastructure Agent。  
+
+_# 1. SSH 进服务器_
+
+ssh -i your_key.pem ubuntu@ec2-100-29-3-1.compute-1.amazonaws.com _# 2. 安装 Infrastructure Agent_
+
+curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash
+
+sudo NEW_RELIC_API_KEY=<YOUR_INGEST_KEY> NEW_RELIC_ACCOUNT_ID=<YOUR_ACCOUNT_ID> /usr/local/bin/newrelic install -n infrastructure-agent-installer _# 3. 安装 Docker 集成_
+
+sudo apt-get install nri-docker -y _# 4. 重启 agent_
+
+sudo systemctl restart newrelic-infra
+
+  
+能看到：  
+
+- 宿主机 CPU / 内存 / 磁盘 / 网络
+    
+
+- 每个容器（`amy-prod`、`eva-prod`、所有 nanobot）的 CPU%、内存用量、重启事件
+    
+
+- 容器 OOM / 崩溃 / 重启告警
+    
+
+## 第二层：APM 应用监控（可选，需改容器配置）
+
+监控 Amy 的 Node.js 进程（请求耗时、错误率、具体调用链）。方法：给 `amy-prod` 容器加环境变量和 npm 包：  
+
+_# 进入容器_
+
+docker exec -it amy-prod bash _# 安装 New Relic Node.js agent_
+
+npm install newrelic _# 在容器启动命令前加环境变量_
+
+export NEW_RELIC_APP_NAME="amy-prod"
+
+export NEW_RELIC_LICENSE_KEY="<YOUR_LICENSE_KEY>"
+
+export NODE_OPTIONS="-r newrelic"
+
+但这个方法有两个问题：  
+
+1. 容器重启后安装的包会丢失（需要改 Dockerfile 持久化）
+    
+
+2. 加 `NODE_OPTIONS` 需要重启 Node 进程 = 重启 Amy gateway = 需要 George 操作  
+    所以建议：先只做第一层，已经能监控 Amy 容器的健康状态。第二层等有需要再说。
+    
+
+|你需要准备的|东西|从哪来|
+|---|---|---|
+|New Relic 账号|[newrelic.com](https://newrelic.com) 注册免费版（100GB/月免费）|--|
+|License Key / Ingest Key|New Relic 控制台 → API Keys|--|
+|SSH PEM 密钥 + 用户名|找 George 要|--|
+
+总结：注册 New Relic → 拿到 Key → 找 George 要 SSH 权限 → 在宿主机上跑几条命令 → 完成。
