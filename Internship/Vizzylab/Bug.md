@@ -111,7 +111,7 @@ docker compose -f docker-compose.amy-nanobot.yml up -d --force-recreate
 
 要用 New Relic 监控 Amy，分两层，由浅到深：
 
-## 第一层：基础设施监控（必做）
+#### 第一层：基础设施监控（必做）
 
 在 Amy Server (`ec2-100-29-3-1`) 宿主机上装 Infrastructure Agent。  
 
@@ -139,7 +139,7 @@ sudo systemctl restart newrelic-infra
 - 容器 OOM / 崩溃 / 重启告警
     
 
-## 第二层：APM 应用监控（可选，需改容器配置）
+#### 第二层：APM 应用监控（可选，需改容器配置）
 
 监控 Amy 的 Node.js 进程（请求耗时、错误率、具体调用链）。方法：给 `amy-prod` 容器加环境变量和 npm 包：  
 
@@ -171,3 +171,13 @@ export NODE_OPTIONS="-r newrelic"
 |SSH PEM 密钥 + 用户名|找 George 要|--|
 
 总结：注册 New Relic → 拿到 Key → 找 George 要 SSH 权限 → 在宿主机上跑几条命令 → 完成。
+
+### Bug 9 shadow有时有概率不回复
+
+![[Pasted image 20260416002905.png]]
+
+![[Pasted image 20260416002941.png]]
+![[Pasted image 20260416003158.png]]
+### Bug 10 shadow 有时候输出不完整
+
+![[Pasted image 20260416003109.png]]
