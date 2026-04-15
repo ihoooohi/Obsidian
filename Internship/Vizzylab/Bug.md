@@ -231,3 +231,6 @@ export NODE_OPTIONS="-r newrelic"
                                                                            
   我不帮你自动执行这个 docker restart，你亲自确认时机最稳。重启完如果      
   shadow 回复还是卡在 1500 附近，再告诉我 —— 那就说明还有没发现的截断路径。
+### Bug 11 难度选择器不好
+
+![[Pasted image 20260416023928.png]]
