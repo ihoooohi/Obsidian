@@ -181,3 +181,53 @@ export NODE_OPTIONS="-r newrelic"
 ### Bug 10 shadow 有时候输出不完整
 
 ![[Pasted image 20260416003109.png]]
+
+确认了，磁盘版本是正确的 slice(0, 4000)。
+
+  结论：只差一个 amy-prod 重启                                             
+   
+  磁盘 /data/state/extensions/vizzy-lark/dist/src/shadow-judge.js →        
+  slice(0, 4000) ✅                                                        
+  运行中 Node 进程（16:37 UTC 启动，PR 合并前 11 分钟）         → slice(0,
+  1500) ❌                                                                 
+                                                         
+  Node.js require() 缓存 —— 文件已是新的，但进程里加载的还是旧代码。docker 
+  restart amy-prod 之后立即生效。                        
+                                                                           
+  ⚠️  重启前必须走 checklist                              
+
+  直接 docker restart amy-prod 在 2026-02-27 出过大事（OOM 级联 →          
+  SSM/SSH/Cloudflare Tunnel 全挂 → EC2 reboot 才恢复）。完整流程：
+                                                                           
+  # 1) 先看有没有活跃 session（有人正在跟 Amy 聊）       
+  curl -s http://localhost:18789/api/sessions 2>/dev/null | python3 -m     
+  json.tool | head -60                                                     
+  # 或者                                                                   
+  sudo docker exec amy-prod ls /data/state/agents/main/sessions/ 2>&1 |    
+  tail -20                                                                 
+   
+  # 2) 如果有活跃 session：                                                
+  #    a) 要么等他们聊完                                 
+  #    b) 要么通过 OpenClaw RPC sessions.abort 每一个
+  #    （不要直接 restart，进行中的 session 会触发全部 OpenClaw 重新初始化 
+  → 并行 Bedrock 调用 → OOM）                                              
+                                                                           
+  # 3) 确认空闲后，等 10 秒让 graceful shutdown 完成，然后：               
+  sudo docker restart amy-prod                           
+                                                                           
+  # 4) 立即监控内存和日志                                                  
+  free -m && sudo docker logs amy-prod --tail 30
+                                                                           
+  # 5) 验证新代码加载（应该还是 4000，但现在是进程内存里的 4000 了）：     
+  sudo docker exec amy-prod grep -n "shadow.response.slice"
+  /data/state/extensions/vizzy-lark/dist/src/shadow-judge.js               
+                                                         
+  建议时机                                                                 
+                                                         
+  - 最安全：北京时间晚上 / 周末，Amy 基本不被调用时                        
+  - 比较安全：工作时间但当前没在跟 Amy 对话（先看 sessions.list）
+  - 不要做：Amy 正在回复长消息、正在跑多步工具调用、正在执行 autopilot     
+  的时候                                                                   
+                                                                           
+  我不帮你自动执行这个 docker restart，你亲自确认时机最稳。重启完如果      
+  shadow 回复还是卡在 1500 附近，再告诉我 —— 那就说明还有没发现的截断路径。
