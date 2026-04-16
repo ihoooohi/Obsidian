@@ -233,4 +233,4 @@ export NODE_OPTIONS="-r newrelic"
   shadow 回复还是卡在 1500 附近，再告诉我 —— 那就说明还有没发现的截断路径。
 ### Bug 11 难度选择器不好
 
-![[Pasted image 20260416023928.png]]
+ ![[Pasted image 20260416023928.png]]
