@@ -234,3 +234,6 @@ export NODE_OPTIONS="-r newrelic"
 ### Bug 11 难度选择器不好
 
  ![[Pasted image 20260416023928.png]]
+### Bug 12 shadow 表格无法渲染
+
+ ![[Pasted image 20260417192426.png]]
