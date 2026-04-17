@@ -235,5 +235,4 @@ export NODE_OPTIONS="-r newrelic"
 
  ![[Pasted image 20260416023928.png]]
 ### Bug 12 shadow 表格无法渲染
-
- ![[Pasted image 20260417192426.png]]
+  ![[Pasted image 20260417200000.png]]
