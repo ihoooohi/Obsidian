@@ -248,6 +248,5 @@ export NODE_OPTIONS="-r newrelic"
 ### Bug 15 amy幻觉
 ![[Pasted image 20260422005648.png]]
 
-![[Pasted image 20260422014914.png]]
 
-![[Pasted image 20260422015414.png]]
+
